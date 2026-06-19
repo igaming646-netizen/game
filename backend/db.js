@@ -8,9 +8,19 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB_FILE = path.join(__dirname, 'data', 'db.json');
+// On platforms with a persistent volume (Railway, Fly.io, a VPS...), set
+// DB_FILE_PATH to a path inside that volume so saves survive redeploys.
+// Without it, this defaults to a local file — fine for local dev, but
+// WILL be wiped on any host with an ephemeral filesystem.
+const DB_FILE = process.env.DB_FILE_PATH || path.join(__dirname, 'data', 'db.json');
+
+function ensureDir() {
+    const dir = path.dirname(DB_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+}
 
 function readDb() {
+    ensureDir();
     if (!fs.existsSync(DB_FILE)) {
         const empty = { users: {} };
         fs.writeFileSync(DB_FILE, JSON.stringify(empty, null, 2));
@@ -20,6 +30,7 @@ function readDb() {
 }
 
 function writeDb(db) {
+    ensureDir();
     fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
 }
 

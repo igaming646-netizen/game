@@ -1,5 +1,10 @@
 const Game = {
     // Change this if your backend runs somewhere other than localhost:3001
+    // ⚠️ CHANGE THIS before deploying! 'localhost' only works on YOUR
+    // own machine, while testing locally with the backend also running
+    // locally. Once you deploy the backend (Railway/Render/Fly.io/VPS),
+    // replace this with that server's public URL, e.g.:
+    //   API_BASE: 'https://your-app.up.railway.app/api',
     API_BASE: 'http://localhost:3001/api',
 
     async init() {
@@ -31,11 +36,35 @@ const Game = {
         const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const res = await fetch(this.API_BASE + path, { ...options, headers });
+        let res;
+        try {
+            res = await fetch(this.API_BASE + path, { ...options, headers });
+        } catch (e) {
+            // fetch() itself throws (server down, wrong URL, CORS, offline...)
+            throw new Error('Cannot reach the game server. Make sure the backend is running (see README) and try again.');
+        }
         let data = {};
         try { data = await res.json(); } catch (e) { /* no body */ }
         if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
         return data;
+    },
+
+    // Toggles a submit button between its normal label and a disabled
+    // "Connecting..." state, so double-clicks can't fire duplicate requests
+    // and the player gets feedback while waiting on the server.
+    setButtonLoading(btnId, loading, label) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        if (loading) {
+            btn.dataset.originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.classList.add('opacity-60', 'cursor-not-allowed');
+            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-1.5"></i> ${label}`;
+        } else {
+            btn.disabled = false;
+            btn.classList.remove('opacity-60', 'cursor-not-allowed');
+            if (btn.dataset.originalHtml) btn.innerHTML = btn.dataset.originalHtml;
+        }
     },
 
     // Copies a state object returned by the server into the live State
@@ -59,9 +88,10 @@ const Game = {
         const password = document.getElementById('register-password').value;
         const confirmPassword = document.getElementById('register-password-confirm').value;
 
-        if (!username || !password) { UI.showDialogAlert("Error", "Please fill in both username and password!"); return; }
+        if (!username || !password || !confirmPassword) { UI.showDialogAlert("Error", "Please fill in all fields!"); return; }
         if (password !== confirmPassword) { UI.showDialogAlert("Error", "Passwords do not match!"); return; }
 
+        this.setButtonLoading('btn-register-submit', true, 'Connecting...');
         try {
             const data = await this.apiFetch('/auth/register', {
                 method: 'POST',
@@ -74,7 +104,9 @@ const Game = {
             Utils.log(`New Soul registered and connected: [${username.toUpperCase()}]!`, 'text-emerald-400 font-bold');
             PlayerObj.recalculateStats(); UI.init(); Combat.start(); this.save();
         } catch (e) {
-            UI.showDialogAlert("Error", e.message);
+            UI.showDialogAlert("Registration Failed", e.message);
+        } finally {
+            this.setButtonLoading('btn-register-submit', false);
         }
     },
 
@@ -82,6 +114,9 @@ const Game = {
         const username = document.getElementById('login-username').value.trim().toLowerCase();
         const password = document.getElementById('login-password').value.trim();
 
+        if (!username || !password) { UI.showDialogAlert("Error", "Please enter both username and password!"); return; }
+
+        this.setButtonLoading('btn-login-submit', true, 'Connecting...');
         try {
             const data = await this.apiFetch('/auth/login', {
                 method: 'POST',
@@ -94,7 +129,9 @@ const Game = {
             Utils.log(`Connected successfully as [${username.toUpperCase()}]!`, 'text-indigo-400 font-bold');
             PlayerObj.recalculateStats(); UI.init(); Combat.start(); this.save();
         } catch (e) {
-            UI.showDialogAlert("Error", e.message || "Incorrect username or password!");
+            UI.showDialogAlert("Login Failed", e.message || "Incorrect username or password!");
+        } finally {
+            this.setButtonLoading('btn-login-submit', false);
         }
     },
     setupStarterItems() {

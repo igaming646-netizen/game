@@ -47,11 +47,11 @@
                     </div>
                     <div>
                         <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 pl-1">Password</label>
-                        <input type="password" id="login-password" placeholder="Enter your password" class="w-full bg-gray-955 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all">
+                        <input type="password" id="login-password" placeholder="Enter your password" onkeydown="if(event.key==='Enter') Game.handleLogin()" class="w-full bg-gray-955 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all">
                     </div>
                 </div>
 
-                <button onclick="Game.handleLogin()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-xs uppercase tracking-wider mb-3"><i class="fas fa-sign-in-alt mr-1.5"></i> Connect Soul</button>
+                <button id="btn-login-submit" onclick="Game.handleLogin()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-xs uppercase tracking-wider mb-3"><i class="fas fa-sign-in-alt mr-1.5"></i> Connect Soul</button>
 
                 <button onclick="UI.showAuthView('register')" class="w-full bg-transparent hover:bg-gray-850 text-indigo-300 font-bold py-2.5 rounded-xl transition-all text-xs uppercase tracking-wider mb-4 border border-gray-800"><i class="fas fa-user-plus mr-1.5"></i> Create New Account</button>
 
@@ -75,11 +75,11 @@
                     </div>
                     <div>
                         <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 pl-1">Confirm Password</label>
-                        <input type="password" id="register-password-confirm" placeholder="Re-enter password" class="w-full bg-gray-955 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all">
+                        <input type="password" id="register-password-confirm" placeholder="Re-enter password" onkeydown="if(event.key==='Enter') Game.handleRegister()" class="w-full bg-gray-955 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all">
                     </div>
                 </div>
 
-                <button onclick="Game.handleRegister()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-xs uppercase tracking-wider mb-3"><i class="fas fa-user-plus mr-1.5"></i> Register & Connect</button>
+                <button id="btn-register-submit" onclick="Game.handleRegister()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-xs uppercase tracking-wider mb-3"><i class="fas fa-user-plus mr-1.5"></i> Register & Connect</button>
 
                 <button onclick="UI.showAuthView('login')" class="w-full bg-transparent hover:bg-gray-850 text-gray-400 font-bold py-2.5 rounded-xl transition-all text-xs uppercase tracking-wider mb-4 border border-gray-800"><i class="fas fa-arrow-left mr-1.5"></i> Back to Login</button>
 
@@ -576,7 +576,7 @@
     </div>
 
     <!-- Custom Dialog Modal -->
-    <div id="modal-dialog" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="modal-dialog" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[110] flex items-center justify-center p-4 hidden">
         <div class="bg-gray-900 border border-gray-850 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center">
             <i id="dialog-icon" class="fas fa-exclamation-triangle text-amber-500 text-3xl mb-3"></i>
             <h3 id="dialog-title" class="text-sm font-bold text-white mb-1">Warning</h3>

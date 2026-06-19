@@ -1,0 +1,7 @@
+node_modules/
+.env
+
+# The live database file must NEVER be committed — every git pull/checkout
+# would otherwise overwrite real player saves with whatever was last
+# committed (this was the cause of "data resets on every restart").
+data/db.json
