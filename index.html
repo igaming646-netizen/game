@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eternal Chronicles - Web RPG Premium Ultimate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        gray: { 750: '#151d30', 850: '#0c1322', 900: '#060a13', 955: '#020306' },
+                        damage: '#f87171', heal: '#34d399', mana: '#3b82f6', gauge: '#fbbf24',
+                        rarity: {
+                            common: '#9ca3af', uncommon: '#10b981', rare: '#3b82f6',
+                            sr: '#a855f7', ssr: '#f59e0b', ur: '#ec4899', legendary: '#ef4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-955 text-gray-200 h-screen flex flex-col overflow-hidden select-none relative">
+
+    <div id="login-overlay" class="fixed inset-0 bg-black/95 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-indigo-500/20 rounded-3xl p-8 max-w-md w-full shadow-[0_0_50px_rgba(99,102,241,0.25)] text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-2xl mx-auto mb-4 text-white shadow-lg animate-pulse">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+            <h2 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 mb-1">ETERNAL CHRONICLES</h2>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-6">System Login Screen</p>
+
+            <div class="space-y-4 mb-6 text-left">
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 pl-1">Account</label>
+                    <input type="text" id="login-username" placeholder="Enter admin or guest" class="w-full bg-gray-955 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1.5 pl-1">Password</label>
+                    <input type="password" id="login-password" placeholder="admin123 or guest123" class="w-full bg-gray-955 border border-gray-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all">
+                </div>
+            </div>
+
+            <button onclick="Game.handleLogin()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg text-xs uppercase tracking-wider mb-4"><i class="fas fa-sign-in-alt mr-1.5"></i> Connect Soul</button>
+            
+            <div class="p-3 bg-gray-955 rounded-2xl border border-gray-850 text-[10px] text-left text-gray-400 leading-relaxed">
+                <span class="text-indigo-400 font-bold block mb-1">💡 Test Guide:</span>
+                • <b>Admin:</b> <code class="text-white">admin</code> / <code class="text-white">admin123</code> (Level 50, full resources)<br>
+                • <b>Guest:</b> <code class="text-white">guest</code> / <code class="text-white">guest123</code> (Standard fresh start)
+            </div>
+        </div>
+    </div>
+
+    <button id="master-menu-btn" onclick="UI.toggleMasterMenu()" class="fixed top-4 left-4 z-50 bg-gradient-to-r from-gray-900 to-indigo-950 hover:from-indigo-900 hover:to-indigo-850 text-indigo-300 hover:text-white border border-indigo-500/30 rounded-xl px-4 py-2.5 shadow-[0_0_20px_rgba(99,102,241,0.25)] flex items-center gap-2.5 text-xs font-black uppercase tracking-wider transition-all duration-300">
+        <i class="fas fa-bars-staggered text-sm"></i>
+        <span id="master-menu-text">System (Hidden)</span>
+    </button>
+
+    <header id="game-header" class="hidden bg-gray-900/90 border-b border-gray-800 px-4 py-3 flex justify-between items-center shadow-2xl z-20 flex-shrink-0 transition-all duration-300 pl-40">
+        <div class="flex items-center gap-6">
+            <h1 class="text-lg font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-500 to-indigo-500 flex items-center gap-2">
+                <i class="fas fa-fire-alt text-amber-500 animate-pulse"></i>ETERNAL CHRONICLES
+            </h1>
+            <div class="hidden lg:flex items-center gap-4 text-xs">
+                <div class="bg-gray-955 px-3 py-1.5 rounded-lg border border-gray-800 flex items-center gap-1.5">
+                    <i class="fas fa-coins text-amber-500 animate-pulse"></i> 
+                    <span id="ui-gold" class="font-mono text-amber-400 font-bold">0</span>
+                </div>
+                <div class="bg-gray-955 px-3 py-1.5 rounded-lg border border-gray-800 flex items-center gap-1.5">
+                    <i class="fas fa-gem text-cyan-400 animate-pulse"></i> 
+                    <span id="ui-gems" class="font-mono text-cyan-400 font-bold">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="UI.toggleLogSidebar()" class="bg-gray-850 hover:bg-gray-800 text-gray-300 py-1.5 px-3 rounded-lg text-xs transition-all border border-gray-800 flex items-center gap-2">
+                <i class="fas fa-scroll"></i> <span id="toggle-log-btn-text">Show Log</span>
+            </button>
+            <div class="text-xs bg-gray-955 px-3 py-1.5 rounded-lg border border-gray-800 font-bold text-indigo-400 uppercase tracking-widest text-[9px]" id="ui-current-mode">AUTO FARM</div>
+            <button onclick="Game.save()" class="bg-indigo-950/60 hover:bg-indigo-900/60 text-indigo-300 py-1.5 px-3 rounded-lg text-xs border border-indigo-900"><i class="fas fa-save"></i></button>
+            <button onclick="UI.showResetConfirm()" class="bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 py-1.5 px-3 rounded-lg text-xs border border-rose-900"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        <aside id="game-sidebar" class="hidden w-16 md:w-56 bg-gray-955 border-r border-gray-900 flex flex-col p-3 pt-20 gap-2 flex-shrink-0 transition-all duration-300 z-30">
+            <button id="nav-combat" onclick="UI.switchTab('combat')" class="nav-btn bg-indigo-950/30 text-indigo-400 text-left p-3 rounded-xl flex items-center gap-4 border border-indigo-900/30 transition-all">
+                <i class="fas fa-swords text-lg w-5 text-center"></i> 
+                <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Battlefield</span>
+            </button>
+            <button id="nav-character" onclick="UI.switchTab('character')" class="nav-btn text-gray-500 text-left p-3 rounded-xl flex items-center gap-4 transition-all">
+                <i class="fas fa-user-shield text-lg w-5 text-center"></i> 
+                <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Character</span>
+            </button>
+            <button id="nav-companions" onclick="UI.switchTab('companions')" class="nav-btn text-gray-500 text-left p-3 rounded-xl flex items-center gap-4 transition-all">
+                <i class="fas fa-users-crown text-lg w-5 text-center"></i> 
+                <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Squad</span>
+            </button>
+            <button id="nav-inventory" onclick="UI.switchTab('inventory')" class="nav-btn text-gray-500 text-left p-3 rounded-xl flex items-center gap-4 transition-all">
+                <i class="fas fa-backpack text-lg w-5 text-center"></i> 
+                <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Inventory</span>
+            </button>
+            <button id="nav-skills" onclick="UI.switchTab('skills')" class="nav-btn text-gray-500 text-left p-3 rounded-xl flex items-center gap-4 transition-all">
+                <i class="fas fa-book-sparkles text-lg w-5 text-center"></i> 
+                <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Arcane Arts</span>
+            </button>
+            <button id="nav-forge" onclick="UI.switchTab('forge')" class="nav-btn text-gray-500 text-left p-3 rounded-xl flex items-center gap-4 transition-all">
+                <i class="fas fa-hammer-war text-lg w-5 text-center"></i> 
+                <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Forge</span>
+            </button>
+        </aside>
+
+        <main class="flex-1 bg-gray-900/30 p-4 overflow-y-auto relative z-10 flex flex-col justify-between" id="main-content">
+            <div class="flex-1">
+                <!-- COMBAT TAB -->
+                <div id="tab-combat" class="h-full flex flex-col gap-4">
+                    <div class="flex flex-col gap-3 p-4 bg-gray-955/90 border border-gray-850 rounded-2xl shadow-xl mt-12 md:mt-0">
+                        <div class="flex gap-2 justify-center flex-wrap">
+                            <button onclick="Game.setMode('farm')" id="btn-mode-farm" class="btn-action flex-1 py-3 px-4 font-bold text-xs uppercase bg-indigo-950/40 border border-indigo-700/60 text-indigo-300 rounded-xl transition-all">Auto Grind</button>
+                            <button onclick="Game.setMode('dungeon')" id="btn-mode-dungeon" class="btn-action flex-1 py-3 px-4 font-bold text-xs uppercase bg-gray-900/50 border border-gray-800 text-gray-400 rounded-xl transition-all"><i class="fas fa-shield-halved mr-1.5"></i>Dungeon (<span id="ui-dungeon-attempts">30</span>/30)</button>
+                            <button onclick="Game.setMode('tower')" id="btn-mode-tower" class="btn-action flex-1 py-3 px-4 font-bold text-xs uppercase bg-gray-900/50 border border-gray-800 text-gray-400 rounded-xl transition-all"><i class="fas fa-chess-rook mr-1.5"></i>Babel Tower (Floor <span id="ui-tower-floor">1</span>)</button>
+                        </div>
+                        
+                        <!-- Dungeon Setup Pre-battle Hub -->
+                        <div id="dungeon-hub-container" class="border-t border-gray-900 pt-3 mt-1 flex flex-col gap-3 hidden">
+                            <div class="flex justify-between items-center flex-wrap gap-2">
+                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest"><i class="fas fa-map-marked-alt mr-2 text-indigo-400"></i>Expedition Prep Board (Solo Combat):</span>
+                                <div class="bg-gray-900 border border-gray-800 p-1.5 rounded-xl flex items-center gap-2">
+                                    <span class="text-[9px] text-gray-400 font-bold uppercase">Quick sweep runs:</span>
+                                    <select id="sweep-count-select" class="bg-gray-955 border border-gray-800 rounded text-[10px] px-2 py-0.5 text-white font-mono">
+                                        <option value="1">1 Run</option>
+                                        <option value="5">5 Runs</option>
+                                        <option value="10">10 Runs</option>
+                                        <option value="30">30 Runs</option>
+                                    </select>
+                                    <button onclick="Game.sweepDungeon()" class="bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold px-3 py-1 text-[9px] rounded-lg transition-all uppercase tracking-wider">Quick Sweep</button>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <button id="btn-dg-exp" onclick="Game.selectDungeonType('exp')" class="p-2.5 rounded-xl border border-indigo-500/50 bg-indigo-950/30 text-indigo-300 font-bold text-xs text-left">
+                                    <i class="fas fa-graduation-cap mr-1.5 text-indigo-400"></i> EXP Dungeon <br><span class="text-[8px] font-normal text-gray-400">5x combat EXP multiplier</span>
+                                </button>
+                                <button id="btn-dg-gold" onclick="Game.selectDungeonType('gold')" class="p-2.5 rounded-xl border border-gray-850 bg-gray-900/50 text-gray-400 font-bold text-xs text-left">
+                                    <i class="fas fa-coins mr-1.5 text-amber-500"></i> Gold Dungeon <br><span class="text-[8px] font-normal text-gray-400">Receive large amounts of Gold</span>
+                                </button>
+                                <button id="btn-dg-material" onclick="Game.selectDungeonType('material')" class="p-2.5 rounded-xl border border-gray-850 bg-gray-900/50 text-gray-400 font-bold text-xs text-left">
+                                    <i class="fas fa-cubes mr-1.5 text-emerald-400"></i> Ore Dungeon <br><span class="text-[8px] font-normal text-gray-400">Collect iron ore directly</span>
+                                </button>
+                                <button id="btn-dg-soul" onclick="Game.selectDungeonType('soul')" class="p-2.5 rounded-xl border border-gray-850 bg-gray-900/50 text-gray-400 font-bold text-xs text-left">
+                                    <i class="fas fa-ghost mr-1.5 text-purple-400"></i> Soul Dungeon <br><span class="text-[8px] font-normal text-gray-400">Drop Soul Stones &amp; Breakthroughs</span>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-2" id="zone-selector-grid"></div>
+
+                            <div class="flex justify-center mt-2">
+                                <button onclick="Game.confirmChallenge()" class="bg-gradient-to-r from-red-600 via-orange-600 to-amber-500 text-white font-extrabold px-12 py-3 rounded-2xl shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:brightness-110 active:scale-95 transition-all uppercase tracking-wider text-xs">
+                                    <i class="fas fa-swords mr-2 animate-bounce"></i>Begin Solo Expedition
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 relative min-h-[420px] border border-gray-850 rounded-3xl overflow-hidden shadow-inner flex flex-col justify-between p-4" id="arena-box" style="background: linear-gradient(180deg, rgba(3,5,10,0.85) 0%, rgba(3,5,10,0.5) 50%, rgba(3,5,10,0.85) 100%), url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;">
+                        <div class="flex justify-between items-center z-20 relative text-[9px] font-bold">
+                            <span class="text-indigo-400 uppercase bg-indigo-950/30 border border-indigo-900/40 px-3 py-1 rounded-lg"><i class="fas fa-shield mr-1"></i>Light Side</span>
+                            <span class="text-gray-400 bg-gray-955/80 px-4 py-1.5 rounded-full border border-gray-800 uppercase tracking-widest">Fully automated combat (Smart AI targets weaknesses)</span>
+                            <span class="text-rose-400 uppercase bg-rose-950/30 border border-rose-900/40 px-3 py-1 rounded-lg"><i class="fas fa-skull mr-1"></i>Dark Forces</span>
+                        </div>
+
+                        <div class="flex-1 w-full h-full relative" id="battle-scene-wrapper">
+                            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:35px_35px]" style="transform: perspective(500px) rotateX(55deg) scale(1.8); transform-origin: top center; pointer-events: none;"></div>
+                            <div id="action-timeline" class="absolute left-2 top-1/2 -translate-y-1/2 w-12 bg-gray-955/95 border border-gray-850 p-2 rounded-xl flex flex-col gap-1.5 z-30 shadow-2xl items-center">
+                                <span class="text-[7px] text-gray-500 font-bold tracking-widest">TURN</span>
+                                <div id="timeline-queue" class="flex flex-col gap-1.5 w-full items-center"></div>
+                            </div>
+                            <div id="battle-scene" class="absolute inset-0 z-10 w-full h-full pointer-events-none pt-8"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHARACTER TAB -->
+                <div id="tab-character" class="hidden h-full flex flex-col xl:flex-row gap-4 pt-12 md:pt-0">
+                    <div class="w-full xl:w-5/12 bg-gray-955 border border-gray-850 rounded-2xl p-4 shadow-lg">
+                        <h2 class="text-xl font-black text-white mb-0.5" id="char-name">Knight of Light</h2>
+                        <p class="text-[9px] text-gray-500 mb-4 border-b border-gray-900 pb-2 uppercase tracking-wider font-bold">Affinity: <span class="text-yellow-400 font-black">Light</span></p>
+                        
+                        <div class="mb-4 bg-gray-900 p-3 rounded-xl border border-gray-850">
+                            <div class="flex justify-between text-[11px] font-bold mb-1">
+                                <span>LEVEL: <span id="char-level" class="text-cyan-400 font-extrabold text-sm">1</span></span>
+                                <span class="text-gray-400 font-mono"><span id="char-exp">0</span> / <span id="char-exp-max">100</span> EXP</span>
+                            </div>
+                            <div class="w-full bg-gray-955 h-2 rounded-full overflow-hidden border border-gray-800">
+                                <div id="char-exp-bar" class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Batch Allocator Tool -->
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-indigo-400 text-xs uppercase tracking-wider">Attribute Points: <span id="char-stat-points" class="text-lg text-white">0</span></span>
+                            <div class="flex gap-1 bg-gray-955 p-1 rounded-lg border border-gray-850">
+                                <button onclick="UI.setAllocationBatch(1)" id="alloc-batch-1" class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-600 text-white">x1</button>
+                                <button onclick="UI.setAllocationBatch(10)" id="alloc-batch-10" class="px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 hover:text-white">x10</button>
+                                <button onclick="UI.setAllocationBatch(100)" id="alloc-batch-100" class="px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 hover:text-white">x100</button>
+                                <button onclick="UI.setAllocationBatch('max')" id="alloc-batch-max" class="px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 hover:text-white">Max</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 mb-4 max-h-[160px] overflow-y-auto pr-1" id="stat-allocation-buttons"></div>
+                        <h3 class="font-bold text-amber-500 mb-2 flex justify-between items-center text-[10px] uppercase">
+                            Soul Vital Stats
+                            <span class="text-[9px] bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400">CP: <span id="char-cp" class="text-white font-mono font-bold">0</span></span>
+                        </h3>
+                        <div class="grid grid-cols-1 gap-y-1.5 text-xs font-semibold bg-gray-900 p-3 rounded-xl border border-gray-850" id="char-stats-grid"></div>
+                        
+                        <div class="mt-3 text-right">
+                            <button onclick="Game.resetStats()" class="bg-rose-950/80 hover:bg-rose-900 border border-rose-900 text-rose-300 font-bold px-3 py-1.5 rounded-lg text-[9px] transition-all"><i class="fas fa-arrows-spin mr-1"></i> Reset Stats (10k Gold)</button>
+                        </div>
+                    </div>
+
+                    <div class="w-full xl:w-7/12 bg-gray-955 border border-gray-850 rounded-2xl p-4 flex flex-col justify-between shadow-lg">
+                        <div>
+                            <h3 class="font-bold text-cyan-400 border-b border-gray-900 pb-2 mb-3 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fas fa-shield-halved"></i> Currently Equipped Gear
+                            </h3>
+                            <div class="grid grid-cols-3 gap-2.5" id="equipment-slots"></div>
+                        </div>
+                        <div class="p-3 bg-gray-900 rounded-xl border border-gray-850 text-[10px] text-gray-400 leading-relaxed mt-4 shadow-inner">
+                            <i class="fas fa-info-circle text-cyan-400 mr-1.5"></i>
+                            <b>GUIDE:</b> CLICK AN EQUIPPED SLOT TO ACTIVELY UNEQUIP IT, OR CLICK AN EMPTY SLOT TO LIST AVAILABLE GEAR IN YOUR BAG AND EQUIP INSTANTLY.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMPANIONS TAB -->
+                <div id="tab-companions" class="hidden h-full flex flex-col gap-4 pt-12 md:pt-0">
+                    <div class="bg-gray-955/95 border border-gray-850 rounded-2xl p-4 shadow-lg">
+                        <div class="flex justify-between items-center flex-wrap gap-4 border-b border-gray-900 pb-3 mb-3">
+                            <div>
+                                <h2 class="text-lg font-black text-white flex items-center gap-2"><i class="fas fa-users text-indigo-400"></i>Sworn Companions</h2>
+                                <p class="text-[10px] text-gray-500">Recruit more allies and Spirit Beasts to assist in combat (Only active in Auto Farm &amp; Tower; Dungeon expeditions are SOLO)</p>
+                            </div>
+                            <div class="flex gap-2 text-[10px] font-bold">
+                                <span class="bg-gray-900 px-3 py-1 rounded border border-gray-800 flex items-center gap-1.5"><i class="fas fa-paw text-emerald-400"></i>Beast Soul: <span id="ui-pet-soul" class="font-bold text-emerald-300 font-mono">0</span></span>
+                                <span class="bg-gray-900 px-3 py-1 rounded border border-gray-800 flex items-center gap-1.5"><i class="fas fa-user-ninja text-indigo-400"></i>Oath Stone: <span id="ui-comp-soul" class="font-bold text-indigo-300 font-mono">0</span></span>
+                            </div>
+                        </div>
+
+                        <!-- Pity Banner HUD -->
+                        <div class="bg-gray-900 p-3 rounded-xl border border-gray-850 mb-3 text-xs">
+                            <div class="flex justify-between items-center font-bold mb-1">
+                                <span class="text-indigo-400 uppercase tracking-widest text-[9px]"><i class="fas fa-shield-cat mr-1"></i>UR Summon Pity Protection (Regular summon accumulation)</span>
+                                <span class="font-mono text-white"><span id="ui-pity-count">0</span> / 150</span>
+                            </div>
+                            <div class="w-full bg-gray-955 h-2.5 rounded-full overflow-hidden border border-gray-800 mb-2">
+                                <div id="ui-pity-bar" class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <div class="flex gap-2 justify-between items-center flex-wrap">
+                                <div class="flex gap-1.5 items-center flex-wrap">
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase">Max quick-release tier:</span>
+                                    <select id="bulk-release-tier" class="bg-gray-955 border border-gray-800 text-[10px] text-gray-300 rounded px-2 py-1">
+                                        <option value="C">Common only (C)</option>
+                                        <option value="R">Merge Common &amp; Rare (C, R)</option>
+                                        <option value="SR">Clear up to Super Rare (C, R, SR)</option>
+                                        <option value="SSR">Release all up to SSR (Not recommended)</option>
+                                    </select>
+                                    <button onclick="Partners.bulkRelease('pet')" class="bg-emerald-950/40 border border-emerald-900/40 text-emerald-300 text-[9px] font-bold px-2 py-1 rounded-lg transition-all">Release Pets</button>
+                                    <button onclick="Partners.bulkRelease('companion')" class="bg-rose-955 border border-rose-900 text-rose-300 text-[9px] font-bold px-2 py-1 rounded-lg transition-all">Release Companions</button>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button id="btn-pity-pet" onclick="Partners.claimPity('pet')" class="bg-emerald-900/40 border border-emerald-700/50 text-emerald-300 text-[9px] font-bold px-3 py-1.5 rounded-lg transition-all opacity-50 cursor-not-allowed" disabled>Claim UR Pet</button>
+                                    <button id="btn-pity-comp" onclick="Partners.claimPity('companion')" class="bg-indigo-900/40 border border-indigo-700/50 text-indigo-300 text-[9px] font-bold px-3 py-1.5 rounded-lg transition-all opacity-50 cursor-not-allowed" disabled>Claim UR Companion</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Summon Buttons -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                            <div class="bg-gray-900 p-3 rounded-xl border border-gray-850 flex flex-col justify-between shadow-inner">
+                                <div>
+                                    <h4 class="font-bold text-emerald-400 text-xs uppercase mb-1"><i class="fas fa-egg mr-1"></i>Hatch Spirit Beast</h4>
+                                    <p class="text-[9px] text-gray-500 mb-2">Standard hatch costs 10k Gold (0% UR). Premium costs 100 Gems (90% SSR / 10% UR).</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="Partners.summon('pet', false, 1)" class="bg-gray-955 hover:bg-gray-800 border border-emerald-900/40 text-emerald-400 font-bold py-2 rounded-xl text-[9px] transition-all">x1 (10k Gold)</button>
+                                    <button onclick="Partners.summon('pet', false, 10)" class="bg-gray-955 hover:bg-gray-800 border border-emerald-900/40 text-emerald-400 font-bold py-2 rounded-xl text-[9px] transition-all">x10 (100k Gold)</button>
+                                    <button onclick="Partners.summon('pet', true, 1)" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-2 rounded-xl text-[9px] transition-all shadow-md">x1 (100 KC)</button>
+                                    <button onclick="Partners.summon('pet', true, 10)" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold py-2 rounded-xl text-[9px] transition-all shadow-md">x10 (1000 KC)</button>
+                                </div>
+                            </div>
+                            <div class="bg-gray-900 p-3 rounded-xl border border-gray-850 flex flex-col justify-between shadow-inner">
+                                <div>
+                                    <h4 class="font-bold text-indigo-400 text-xs uppercase mb-1"><i class="fas fa-compass-drafting mr-1"></i>Invite Ally</h4>
+                                    <p class="text-[9px] text-gray-500 mb-2">Standard invite costs 10k Gold (0% UR). Premium costs 100 Gems (90% SSR / 10% UR).</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="Partners.summon('companion', false, 1)" class="bg-gray-955 hover:bg-gray-800 border border-indigo-900/40 text-indigo-400 font-bold py-2 rounded-xl text-[9px] transition-all">x1 (10k Gold)</button>
+                                    <button onclick="Partners.summon('companion', false, 10)" class="bg-gray-955 hover:bg-gray-800 border border-indigo-900/40 text-indigo-400 font-bold py-2 rounded-xl text-[9px] transition-all">x10 (100k Gold)</button>
+                                    <button onclick="Partners.summon('companion', true, 1)" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-2 rounded-xl text-[9px] transition-all shadow-md">x1 (100 KC)</button>
+                                    <button onclick="Partners.summon('companion', true, 10)" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-2 rounded-xl text-[9px] transition-all shadow-md">x10 (1000 KC)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="bg-gray-900 p-3 rounded-xl border border-gray-850 shadow-inner">
+                                <h3 class="font-bold text-emerald-400 border-b border-gray-850 pb-2 mb-2 text-xs uppercase"><i class="fas fa-dog mr-1.5"></i>Support Spirit Beasts</h3>
+                                <div id="pets-list-container" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
+                            </div>
+                            <div class="bg-gray-900 p-3 rounded-xl border border-gray-850 shadow-inner">
+                                <h3 class="font-bold text-indigo-400 border-b border-gray-850 pb-2 mb-2 text-xs uppercase"><i class="fas fa-user-shield mr-1.5"></i>Companion Roster</h3>
+                                <div id="comps-list-container" class="space-y-2 max-h-[300px] overflow-y-auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INVENTORY TAB -->
+                <div id="tab-inventory" class="hidden h-full flex flex-col gap-4 pt-12 md:pt-0">
+                    <div class="bg-gray-955 border border-gray-850 rounded-2xl p-4 flex-1 flex flex-col min-h-[50vh] shadow-lg">
+                        <div class="flex justify-between items-center mb-3 pb-2 border-b border-gray-900 flex-wrap gap-2">
+                            <div class="flex gap-1.5">
+                                <h3 class="font-bold text-white text-xs uppercase mr-2 flex items-center">Vault (<span id="inv-count">0</span>/100)</h3>
+                                <button id="inv-sub-equip-btn" onclick="Inventory.setSubTab('equip')" class="px-3 py-1 rounded-lg text-[10px] font-bold border border-indigo-700/60 bg-indigo-950/40 text-indigo-300">Equipment</button>
+                                <button id="inv-sub-chests-btn" onclick="Inventory.setSubTab('chests')" class="px-3 py-1 rounded-lg text-[10px] font-bold border border-gray-800 text-gray-400 hover:text-white">Chests</button>
+                                <button id="inv-sub-mats-btn" onclick="Inventory.setSubTab('mats')" class="px-3 py-1 rounded-lg text-[10px] font-bold border border-gray-800 text-gray-400 hover:text-white">Materials</button>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button onclick="Inventory.sort()" class="bg-gray-900 text-white font-semibold py-1 px-3 text-xs border border-gray-800 rounded-lg"><i class="fas fa-sort mr-1"></i>Sort</button>
+                                <button onclick="Inventory.sellCommon()" class="bg-amber-950/30 text-amber-300 font-semibold py-1 px-3 text-xs border border-amber-900/40 rounded-lg"><i class="fas fa-coins mr-1"></i>Sell Commons</button>
+                            </div>
+                        </div>
+                        
+                        <div id="inventory-grid" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2 overflow-y-auto content-start flex-1 p-3 bg-gray-900 rounded-xl border border-gray-850 min-h-[30vh] shadow-inner"></div>
+                    </div>
+                </div>
+
+                <!-- SKILLS TAB -->
+                <div id="tab-skills" class="hidden h-full bg-gray-955/95 border border-gray-850 rounded-2xl p-4 pt-12 md:pt-0 shadow-lg">
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-900 pb-2 flex-wrap gap-2">
+                        <div>
+                            <h2 class="text-lg font-black text-white">Elemental Talents</h2>
+                            <p class="text-[10px] text-gray-500">Spend Element Points (EP) to unlock arcane arts that augment your character</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="flex gap-1 bg-gray-900 p-1 rounded-lg border border-gray-800 text-[10px] items-center shadow-inner">
+                                <span class="text-[9px] text-gray-400 uppercase font-black px-1">Quick EP invest:</span>
+                                <button onclick="UI.setEPBatch(1)" id="ep-batch-1" class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-600 text-white">x1</button>
+                                <button onclick="UI.setEPBatch(5)" id="ep-batch-5" class="px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 hover:text-white">x5</button>
+                                <button onclick="UI.setEPBatch('max')" id="ep-batch-max" class="px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 hover:text-white">Max</button>
+                            </div>
+                            <button onclick="Game.resetEP()" class="bg-rose-950/80 hover:bg-rose-900 border border-rose-900 text-rose-300 font-bold px-3 py-1.5 rounded-lg text-xs"><i class="fas fa-arrows-spin"></i> Reset EP (10k Gold)</button>
+                            <div class="text-indigo-300 font-bold bg-indigo-950/40 px-3 py-1.5 rounded-xl border border-indigo-900/60 shadow-inner text-xs">
+                                EP Available: <span id="char-ep-field" class="text-lg text-indigo-400 font-mono font-black">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 overflow-y-auto max-h-[58vh]" id="skill-trees-container"></div>
+                </div>
+
+                <!-- FORGE TAB -->
+                <div id="tab-forge" class="hidden h-full flex flex-col gap-4 pt-12 md:pt-0">
+                    <div class="flex border-b border-gray-900">
+                        <button id="subtab-enhance-btn" onclick="UI.switchForgeTab('enhance')" class="py-2.5 px-4 border-b-2 border-indigo-500 font-bold text-xs text-white">ENHANCE GEAR</button>
+                        <button id="subtab-craft-btn" onclick="UI.switchForgeTab('craft')" class="py-2.5 px-4 border-b-2 border-transparent text-gray-500 font-bold text-xs hover:text-white">CRAFT GEAR</button>
+                        <button id="subtab-alchemy-btn" onclick="UI.switchForgeTab('alchemy')" class="py-2.5 px-4 border-b-2 border-transparent text-gray-500 font-bold text-xs hover:text-white">ALCHEMY</button>
+                    </div>
+
+                    <!-- SUBTAB: ENHANCE -->
+                    <div id="subtab-enhance" class="flex flex-col md:flex-row gap-4">
+                        <div class="w-full md:w-1/2 bg-gray-955 border border-gray-850 rounded-2xl p-4 shadow-lg relative overflow-hidden">
+                            <h3 class="font-bold text-orange-500 border-b border-gray-900 pb-2 mb-3 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fas fa-fire text-amber-500 animate-bounce"></i>Star Enhancement Forge
+                            </h3>
+                            <div id="enhance-equip-list" class="grid grid-cols-3 gap-2 mb-3 p-2 bg-gray-900 rounded-xl border border-gray-850 shadow-inner"></div>
+                            
+                            <div id="forge-platform" class="bg-gray-900 p-5 rounded-2xl border border-gray-850 min-h-[120px] flex flex-col items-center justify-center text-center shadow-inner relative">
+                                <div id="forge-loader" class="absolute inset-0 bg-gray-955/85 rounded-2xl flex flex-col items-center justify-center hidden">
+                                    <i class="fas fa-anvil text-amber-500 text-3xl animate-spin mb-2"></i>
+                                    <span class="text-xs text-gray-400 font-mono tracking-widest">FORGING...</span>
+                                </div>
+                                <div id="enhance-target" class="space-y-1 text-xs">
+                                    <span class="text-gray-500">Please select gear to forge from the equipment tray above</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 p-2.5 bg-gray-900 rounded-xl border border-gray-800 flex items-center justify-between text-xs shadow-inner">
+                                <label for="chk-protection" class="font-bold text-cyan-400 flex items-center gap-2 cursor-pointer">
+                                    <i class="fas fa-shield-halved text-cyan-400"></i> Protection Charm (+5,000 Gold)
+                                </label>
+                                <input type="checkbox" id="chk-protection" class="w-5 h-5 text-cyan-600 bg-gray-955 border-gray-850 rounded focus:ring-cyan-500 cursor-pointer">
+                            </div>
+                            
+                            <div class="mt-4 text-center">
+                                <button onclick="Crafting.triggerForgeAnimation('enhance')" class="w-full bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider shadow-md">Start Forging</button>
+                                <p id="enhance-info" class="text-xs text-gray-400 mt-2.5 font-mono"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 bg-gray-955 border border-gray-850 rounded-2xl p-4 flex flex-col justify-between shadow-lg">
+                            <div>
+                                <h3 class="font-bold text-indigo-400 border-b border-gray-900 pb-2 mb-3 text-xs uppercase">Star Enhancement Rates</h3>
+                                <ul class="text-xs space-y-2 text-gray-400 font-mono">
+                                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-500"></i> +1 to +5: <span class="text-emerald-400 font-bold">100% success</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-500"></i> +6 to +10: <span class="text-yellow-400 font-bold">80% success</span></li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-exclamation-triangle text-amber-500"></i> +11 to +15: <span class="text-amber-500 font-bold">50% success</span> (Fail drops 1 star)</li>
+                                    <li class="flex items-center gap-2"><i class="fas fa-fire-extinguisher text-rose-500"></i> +16 and above: <span class="text-rose-500 font-bold">25% success</span> (Fail drops 2 stars)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-900 p-3 rounded-xl border border-gray-850 text-center text-[10px] text-gray-500 mt-4 leading-relaxed shadow-inner">
+                                Protection Charm preserves the current star level on failure (Only available for gear at +10 stars or above).
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB: CRAFT -->
+                    <div id="subtab-craft" class="hidden flex flex-col md:flex-row gap-4">
+                        <div class="w-full md:w-1/2 bg-gray-955 border border-gray-850 rounded-2xl p-4 shadow-lg">
+                            <h3 class="font-bold text-indigo-400 border-b border-gray-900 pb-2 mb-3 text-xs uppercase flex items-center gap-2">
+                                <i class="fas fa-gem text-indigo-500"></i>Craft Revelation Gear
+                            </h3>
+                            <p class="text-[10px] text-gray-500 mb-3">Use Fine Iron to forge a random piece of gear for the selected slot below:</p>
+                            <div class="grid grid-cols-3 gap-2 mb-3" id="craft-slot-selector"></div>
+
+                            <div class="bg-gray-900 p-3 rounded-xl border border-gray-850 flex flex-col gap-1.5 text-[10px] font-mono text-gray-400 mb-3 shadow-inner">
+                                <div class="flex justify-between"><span>Fine Iron in storage:</span> <span id="ui-current-craft-mats" class="text-emerald-400 font-bold">0</span></div>
+                                <div class="flex justify-between"><span>Cost per craft:</span> <span class="text-white font-bold">10 Fine Iron</span></div>
+                                <div class="flex justify-between"><span>Output tier:</span> <span class="text-cyan-400 font-bold">Matches current player level</span></div>
+                            </div>
+
+                            <button onclick="Crafting.triggerForgeAnimation('craft')" class="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl text-xs uppercase shadow-md">Craft Now</button>
+                        </div>
+                        <div class="w-full md:w-1/2 bg-gray-955 border border-gray-850 rounded-2xl p-4 shadow-lg">
+                            <h3 class="font-bold text-gray-400 border-b border-gray-900 pb-2 mb-2 text-xs uppercase">Forge Drop Rates</h3>
+                            <ul class="text-xs space-y-1.5 text-gray-400 font-mono">
+                                <li class="flex justify-between"><span>Uncommon (Green)</span> <span class="text-emerald-400 font-bold">45.0%</span></li>
+                                <li class="flex justify-between"><span>Rare (Blue)</span> <span class="text-blue-400 font-bold">35.0%</span></li>
+                                <li class="flex justify-between"><span>SR (Purple)</span> <span class="text-purple-400 font-bold">15.0%</span></li>
+                                <li class="flex justify-between"><span>SSR (Gold)</span> <span class="text-amber-500 font-bold">4.0%</span></li>
+                                <li class="flex justify-between"><span>UR (Pink)</span> <span class="text-rose-400 font-bold">0.9%</span></li>
+                                <li class="flex justify-between"><span>Legendary (Red)</span> <span class="text-red-500 font-bold">0.1%</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- SUBTAB: ALCHEMY -->
+                    <div id="subtab-alchemy" class="hidden flex flex-col md:flex-row gap-4">
+                        <div class="w-full md:w-1/2 bg-gray-955 border border-gray-850 rounded-2xl p-4 shadow-lg">
+                            <h3 class="font-bold text-teal-400 border-b border-gray-900 pb-2 mb-3 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fas fa-flask text-teal-500"></i>Elemental Alchemy
+                            </h3>
+                            <p class="text-[10px] text-gray-500 mb-3">Fuse 3 lower-grade resources to upgrade into higher-quality refined crystals:</p>
+                            
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="Crafting.alchemyAction('common_to_uncommon')" class="bg-gray-900 border border-gray-800 p-2.5 rounded-xl text-left flex justify-between items-center text-xs shadow-inner">
+                                    <div>
+                                        <div class="font-bold text-white mb-0.5">Raw Iron ──> Fine Iron</div>
+                                        <div class="text-[8px] text-gray-500 font-mono">Requires: 3 Raw Iron (In stock: <span id="ui-alchemy-mats-raw">0</span>)</div>
+                                    </div>
+                                    <span class="text-emerald-400 font-mono font-bold">Success: 85%</span>
+                                </button>
+                                <button onclick="Crafting.alchemyAction('uncommon_to_rare')" class="bg-gray-900 border border-gray-800 p-2.5 rounded-xl text-left flex justify-between items-center text-xs shadow-inner">
+                                    <div>
+                                        <div class="font-bold text-white mb-0.5">Fine Iron ──> Refined Iron</div>
+                                        <div class="text-[8px] text-gray-500 font-mono">Requires: 3 Fine Iron (In stock: <span id="ui-alchemy-mats-fine">0</span>)</div>
+                                    </div>
+                                    <span class="text-amber-400 font-mono font-bold">Success: 60%</span>
+                                </button>
+                                <button onclick="Crafting.alchemyAction('rare_to_legendary')" class="bg-gray-900 border border-gray-800 p-2.5 rounded-xl text-left flex justify-between items-center text-xs shadow-inner">
+                                    <div>
+                                        <div class="font-bold text-white mb-0.5">Refined Iron ──> Philosopher's Stone</div>
+                                        <div class="text-[8px] text-gray-500 font-mono">Requires: 3 Refined Iron (In stock: <span id="ui-alchemy-mats-refined">0</span>)</div>
+                                    </div>
+                                    <span class="text-rose-400 font-mono font-bold">Success: 35%</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 bg-gray-955 border border-gray-850 rounded-2xl p-4 flex flex-col justify-between shadow-lg">
+                            <div>
+                                <h3 class="font-bold text-white border-b border-gray-900 pb-2 mb-2 text-xs uppercase">Current Material Stock</h3>
+                                <div class="grid grid-cols-1 gap-2 text-xs font-mono" id="ui-forge-materials"></div>
+                            </div>
+                            <div class="p-3 bg-rose-955/20 border border-rose-900/30 text-rose-300 text-[9px] mt-4 leading-relaxed rounded-xl shadow-inner">
+                                <i class="fas fa-exclamation-triangle"></i> ALCHEMY FAILURE: The mineral structure will be completely destroyed and dissolved into 1 fragment of raw iron!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GLOBAL INSPECT PANEL (DRAWER FOR EQUIPMENT DETAILS/EMPTY SLOT OPTION SELECTION) -->
+            <div id="item-details" class="bg-gray-955/95 border border-indigo-900/40 rounded-2xl p-4 shadow-[0_0_30px_rgba(0,0,0,0.8)] hidden mt-4 transition-all duration-300">
+                <div class="flex justify-between items-start flex-wrap gap-4">
+                    <div id="item-details-content" class="flex-1"></div>
+                    <div class="flex flex-col gap-2 min-w-[140px] items-stretch text-center" id="item-details-actions"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Side: Compact Combat Log Panel -->
+        <aside id="combat-log-sidebar" class="w-72 bg-gray-955 border-l border-gray-900 flex flex-col shadow-2xl z-10 hidden flex-shrink-0">
+            <h3 class="bg-gray-900 p-3 text-center font-bold text-[10px] border-b border-gray-900 text-gray-400 tracking-wider uppercase">
+                <i class="fas fa-scroll mr-2"></i> Battle Log
+            </h3>
+            <div id="combat-log" class="flex-1 overflow-y-auto p-3 text-[10px] font-mono text-gray-400 space-y-1.5 bg-gray-955 shadow-inner"></div>
+        </aside>
+    </div>
+
+    <!-- Battle Result Overlays Modal -->
+    <div id="modal-result" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-gray-900 border border-gray-850 rounded-3xl p-6 max-w-md w-full shadow-2xl text-center transform scale-95 transition-all">
+            <div id="modal-result-icon" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl mx-auto mb-4"></div>
+            <h2 id="modal-result-title" class="text-lg font-black mb-1"></h2>
+            <p id="modal-result-subtitle" class="text-xs text-gray-400 mb-4"></p>
+            <div id="modal-result-rewards" class="bg-gray-955 p-4 rounded-2xl border border-gray-850 mb-4 flex flex-col gap-2 text-xs shadow-inner"></div>
+            <div class="flex flex-col gap-2">
+                <button id="modal-btn-action" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider shadow-md"></button>
+                <button onclick="UI.closeResultModal()" class="w-full bg-gray-850 hover:bg-gray-800 text-gray-300 font-bold py-2 rounded-xl text-xs uppercase tracking-wider shadow-md">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loot Summary Overlay Modal (Displays bulk opening results) -->
+    <div id="modal-loot" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[60] flex items-center justify-center p-4 hidden">
+        <div class="bg-gray-900 border border-indigo-500/30 rounded-3xl p-6 max-w-md w-full shadow-[0_0_50px_rgba(99,102,241,0.25)] text-center">
+            <div class="w-16 h-16 rounded-full bg-indigo-950 text-indigo-400 border border-indigo-500/50 flex items-center justify-center text-3xl mx-auto mb-4 animate-pulse">
+                <i class="fas fa-gift"></i>
+            </div>
+            <h3 class="text-lg font-black text-white mb-1">OPENING REWARDS</h3>
+            <p class="text-xs text-gray-500 mb-4 uppercase tracking-widest">Resource vault replenished</p>
+            <div id="loot-modal-content" class="bg-gray-955 p-4 rounded-2xl border border-gray-850 text-left text-xs font-mono max-h-[300px] overflow-y-auto space-y-2 mb-6 shadow-inner"></div>
+            <button onclick="UI.closeLootModal()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider shadow-md">Confirm Receipt</button>
+        </div>
+    </div>
+
+    <!-- Custom Dialog Modal -->
+    <div id="modal-dialog" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-gray-900 border border-gray-850 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center">
+            <i id="dialog-icon" class="fas fa-exclamation-triangle text-amber-500 text-3xl mb-3"></i>
+            <h3 id="dialog-title" class="text-sm font-bold text-white mb-1">Warning</h3>
+            <p id="dialog-text" class="text-xs text-gray-400 mb-5"></p>
+            <div class="flex gap-2 justify-center">
+                <button id="dialog-btn-confirm" class="bg-rose-600 hover:bg-rose-500 text-white font-bold py-2 px-5 rounded-xl text-xs shadow-md">Confirm</button>
+                <button onclick="UI.closeDialog()" class="bg-gray-800 hover:bg-gray-750 text-gray-300 font-bold py-2 px-5 rounded-xl text-xs shadow-md">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/partners.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/crafting.js"></script>
+    <script src="js/combat.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
