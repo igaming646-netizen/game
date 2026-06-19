@@ -473,6 +473,9 @@ const UI = {
                 return `
                     <div class="p-2.5 bg-gray-955 border ${isAct ? 'border-emerald-500 animate-[pulse_2s_infinite]' : 'border-gray-800'} rounded-xl flex flex-col gap-2 text-xs shadow-sm">
                         <div class="flex justify-between items-center">
+                            <div class="w-12 h-12 flex-shrink-0 mr-2 flex items-center justify-center bg-gray-900/60 rounded-lg border border-gray-850 overflow-hidden">
+                                <div class="scale-[0.55]">${Sprites.get(p)}</div>
+                            </div>
                             <div class="flex-1 min-w-0 pr-2">
                                 <div class="font-bold text-white flex items-center gap-1.5 truncate">
                                     <span>${p.name}</span>
@@ -525,6 +528,9 @@ const UI = {
                 return `
                     <div class="p-2.5 bg-gray-955 border ${isAct ? 'border-indigo-500 animate-[pulse_2s_infinite]' : 'border-gray-800'} rounded-xl flex flex-col gap-2 text-xs shadow-sm">
                         <div class="flex justify-between items-center">
+                            <div class="w-12 h-12 flex-shrink-0 mr-2 flex items-center justify-center bg-gray-900/60 rounded-lg border border-gray-850 overflow-hidden">
+                                <div class="scale-[0.55]">${Sprites.get(c)}</div>
+                            </div>
                             <div class="flex-1 min-w-0 pr-2">
                                 <div class="font-bold text-white flex items-center gap-1.5 truncate">
                                     <span>${c.name}</span>
@@ -589,42 +595,7 @@ const UI = {
         let manaPct = Math.max(0, (entity.stats.mana / entity.stats.maxMana) * 100);
         let gaugePct = Math.min(100, (entity.actionGauge / MAX_GAUGE) * 100);
         let rot = (entity.isPlayer || entity.isCompanion || entity.isPet) ? 'transform: scaleX(1);' : 'transform: scaleX(-1);';
-        let customSvgStr = '';
-
-        if (entity.isPlayer) {
-            customSvgStr = `
-            <svg viewBox="0 0 100 120" class="w-20 h-20" style="${rot}">
-                <ellipse cx="50" cy="110" rx="25" ry="6" fill="rgba(0,0,0,0.4)"/>
-                <path d="M 40 45 L 20 95 L 45 90 Z" fill="#4338ca"/>
-                <path d="M 38 40 L 62 40 L 58 85 L 42 85 Z" fill="#64748b" stroke="#334155" stroke-width="2"/>
-                <path d="M 15 50 Q 15 80 30 85 Q 45 80 45 50 Z" fill="#1e1b4b" stroke="#6366f1" stroke-width="2"/>
-                <g transform="translate(72, 75) rotate(-35)">
-                    <rect x="-3" y="-35" width="6" height="35" rx="2" fill="#fff" filter="drop-shadow(0 0 5px #6366f1)"/>
-                    <rect x="-8" y="-10" width="16" height="4" fill="#fbbf24"/>
-                </g>
-            </svg>`;
-        } else if (entity.isCompanion) {
-            customSvgStr = `
-            <svg viewBox="0 0 100 120" class="w-20 h-20" style="${rot}">
-                <ellipse cx="50" cy="110" rx="25" ry="6" fill="rgba(0,0,0,0.4)"/>
-                <path d="M 38 40 L 62 40 L 58 85 L 42 85 Z" fill="#0f766e" stroke="#115e59" stroke-width="2"/>
-                <circle cx="50" cy="25" r="12" fill="#14b8a6"/>
-            </svg>`;
-        } else if (entity.isPet) {
-            customSvgStr = `
-            <svg viewBox="0 0 100 100" class="w-14 h-14" style="${rot}">
-                <path d="M 35 70 Q 15 50 25 35" fill="none" stroke="#f97316" stroke-width="6" stroke-linecap="round"/>
-                <circle cx="50" cy="65" r="18" fill="#f97316"/>
-                <circle cx="45" cy="62" r="2.5" fill="#000"/>
-                <circle cx="55" cy="62" r="2.5" fill="#000"/>
-            </svg>`;
-        } else {
-            customSvgStr = `
-            <svg viewBox="0 0 110 120" class="w-20 h-20" style="${rot}">
-                <ellipse cx="55" cy="110" rx="25" ry="6" fill="rgba(0,0,0,0.4)"/>
-                <circle cx="55" cy="55" r="22" fill="#581c87" filter="drop-shadow(0 0 12px #c084fc)"/>
-            </svg>`;
-        }
+        let customSvgStr = `<div style="${rot}">${Sprites.get(entity)}</div>`;
 
         container.innerHTML = `
             <div id="card-${entity.id}" class="relative flex flex-col items-center justify-end w-28 transition-all duration-300 ${!entity.alive ? 'opacity-20 grayscale' : ''}">
@@ -713,11 +684,10 @@ const UI = {
         let html = '';
         all.slice(0, 5).forEach((e, i) => {
             let isAlly = e.isPlayer || e.isCompanion || e.isPet;
-            let elColor = ELEMENTS[e.element].color;
             let sideBorder = isAlly ? 'border-indigo-500/60 bg-indigo-950/40' : 'border-rose-950 bg-rose-950/40';
             html += `
-                <div class="w-8 h-8 rounded-xl border flex flex-col items-center justify-center relative ${sideBorder} text-xs shadow-md">
-                    <i class="fas ${e.isPlayer ? 'fa-user' : e.isPet ? 'fa-paw' : e.isCompanion ? 'fa-shield-halved' : 'fa-skull'} ${elColor}"></i>
+                <div class="w-8 h-8 rounded-xl border flex items-center justify-center relative ${sideBorder} text-xs shadow-md overflow-hidden" title="${e.name}">
+                    <div class="w-10 h-10 flex items-center justify-center scale-[0.4] origin-center">${Sprites.get(e)}</div>
                 </div>`;
         });
         queueContainer.innerHTML = html;
