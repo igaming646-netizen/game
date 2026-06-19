@@ -90,6 +90,21 @@ const UI = {
         this.applyZoneAtmosphere(State.selectedZoneId);
     },
 
+    showAuthView(view) {
+        const loginView = document.getElementById('login-form-view');
+        const registerView = document.getElementById('register-form-view');
+        const subtitle = document.getElementById('auth-screen-subtitle');
+        if (view === 'register') {
+            loginView.classList.add('hidden');
+            registerView.classList.remove('hidden');
+            subtitle.innerText = 'Create New Soul';
+        } else {
+            registerView.classList.add('hidden');
+            loginView.classList.remove('hidden');
+            subtitle.innerText = 'System Login Screen';
+        }
+    },
+
     applyZoneAtmosphere(zoneId) {
         const arena = document.getElementById('arena-box');
         if (!arena) return;
@@ -829,8 +844,8 @@ const UI = {
         document.getElementById('dialog-text').innerText = "Return to the account login screen?";
         let confirmBtn = document.getElementById('dialog-btn-confirm'); confirmBtn.innerText = "Confirm";
         confirmBtn.onclick = () => {
-            State.player.role = null;
             Game.save();
+            localStorage.removeItem('ec_active_account');
             location.reload();
         };
         modal.classList.remove('hidden');

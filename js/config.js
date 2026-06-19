@@ -1,4 +1,3 @@
-
 const GAME_SPEED = 450; 
 const TICK_RATE = 100; 
 const MAX_GAUGE = 1000; 
@@ -156,3 +155,11 @@ let State = {
     combatState: { active: false, turn: null, allies: [], enemies: [], tickInterval: null }
 };
 
+// Pristine snapshot of a brand-new game State, used to fully isolate
+// per-account data (admin vs guest must never share progress).
+const DEFAULT_STATE_JSON = JSON.stringify(State);
+function resetState() {
+    const fresh = JSON.parse(DEFAULT_STATE_JSON);
+    for (const k in State) delete State[k];
+    Object.assign(State, fresh);
+}
