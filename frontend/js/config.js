@@ -1,3 +1,4 @@
+
 const GAME_SPEED = 450; 
 const TICK_RATE = 100; 
 const MAX_GAUGE = 1000; 
@@ -163,3 +164,4 @@ function resetState() {
     for (const k in State) delete State[k];
     Object.assign(State, fresh);
 }
+

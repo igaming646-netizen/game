@@ -845,10 +845,11 @@ const UI = {
         let confirmBtn = document.getElementById('dialog-btn-confirm'); confirmBtn.innerText = "Confirm";
         confirmBtn.onclick = () => {
             Game.save();
-            localStorage.removeItem('ec_active_account');
+            localStorage.removeItem('ec_token');
             location.reload();
         };
         modal.classList.remove('hidden');
     },
     closeDialog() { const modal = document.getElementById('modal-dialog'); if (modal) modal.classList.add('hidden'); }
 };
+

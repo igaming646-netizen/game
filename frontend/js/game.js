@@ -1,111 +1,100 @@
 const Game = {
-    init() {
-        const activeAccount = localStorage.getItem('ec_active_account');
-        if (activeAccount === 'admin' || activeAccount === 'guest') {
-            this.loadAccount(activeAccount);
-            this.checkDailyReset();
-            PlayerObj.recalculateStats();
-            UI.init();
-            Combat.start();
-            document.getElementById('login-overlay').classList.add('hidden');
+    // Change this if your backend runs somewhere other than localhost:3001
+    API_BASE: 'http://localhost:3001/api',
+
+    async init() {
+        const token = localStorage.getItem('ec_token');
+        if (token) {
+            try {
+                const data = await this.apiFetch('/player/me', { method: 'GET' });
+                this.applyState(data.state);
+                this.checkDailyReset();
+                PlayerObj.recalculateStats();
+                UI.init();
+                Combat.start();
+                document.getElementById('login-overlay').classList.add('hidden');
+            } catch (e) {
+                // token invalid/expired — fall back to login screen
+                localStorage.removeItem('ec_token');
+                UI.init();
+            }
         } else {
             UI.init();
         }
         setInterval(() => this.save(), 20000);
     },
-    // --- Simple local account registry (username -> password) ---
-    // Stored separately from gameplay saves. 'admin' is reserved and
-    // never goes through this registry — it's a fixed demo account.
-    getAccounts() {
-        try { return JSON.parse(localStorage.getItem('ec_accounts') || '{}'); }
-        catch (e) { return {}; }
+
+    // Thin wrapper around fetch(): attaches JWT, throws on non-2xx so
+    // callers can use try/catch instead of checking res.ok everywhere.
+    async apiFetch(path, options = {}) {
+        const token = localStorage.getItem('ec_token');
+        const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch(this.API_BASE + path, { ...options, headers });
+        let data = {};
+        try { data = await res.json(); } catch (e) { /* no body */ }
+        if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+        return data;
     },
-    saveAccounts(accounts) {
-        localStorage.setItem('ec_accounts', JSON.stringify(accounts));
-    },
-    handleRegister() {
-        const user = document.getElementById('register-username').value.trim().toLowerCase();
-        const pass = document.getElementById('register-password').value;
-        const confirm = document.getElementById('register-password-confirm').value;
 
-        if (!user || !pass) { UI.showDialogAlert("Error", "Please fill in both username and password!"); return; }
-        if (!/^[a-z0-9_]{3,16}$/.test(user)) { UI.showDialogAlert("Error", "Username must be 3-16 characters: letters, numbers, underscore only!"); return; }
-        if (user === 'admin') { UI.showDialogAlert("Error", "This username is reserved!"); return; }
-        if (pass.length < 4) { UI.showDialogAlert("Error", "Password must be at least 4 characters!"); return; }
-        if (pass !== confirm) { UI.showDialogAlert("Error", "Passwords do not match!"); return; }
-
-        const accounts = this.getAccounts();
-        if (accounts[user]) { UI.showDialogAlert("Error", "This username is already taken!"); return; }
-
-        accounts[user] = pass;
-        this.saveAccounts(accounts);
-
-        this.loadAccount(user);
-        this.checkDailyReset();
-        localStorage.setItem('ec_active_account', user);
-        document.getElementById('login-overlay').classList.add('hidden');
-        Utils.log(`New Soul registered and connected: [${user.toUpperCase()}]!`, 'text-emerald-400 font-bold');
-        PlayerObj.recalculateStats(); UI.init(); Combat.start(); this.save();
-    },
-    handleLogin() {
-        const user = document.getElementById('login-username').value.trim().toLowerCase();
-        const pass = document.getElementById('login-password').value.trim();
-
-        let valid = false;
-        if (user === 'admin') {
-            valid = (pass === 'admin123');
-        } else {
-            const accounts = this.getAccounts();
-            valid = !!user && accounts[user] === pass;
-        }
-
-        if (valid) {
-            this.loadAccount(user);
-            this.checkDailyReset();
-            localStorage.setItem('ec_active_account', user);
-            document.getElementById('login-overlay').classList.add('hidden');
-            Utils.log(`Connected successfully as [${user.toUpperCase()}]!`, 'text-indigo-400 font-bold');
-            PlayerObj.recalculateStats(); UI.init(); Combat.start(); this.save();
-        } else UI.showDialogAlert("Error", "Incorrect username or password!");
-    },
-    // Loads the named account's isolated save if one exists; otherwise
-    // wipes State back to a clean slate and provisions fresh starter data
-    // for that account. Admin and Guest NEVER share progress.
-    loadAccount(user) {
+    // Copies a state object returned by the server into the live State
+    // object in place (keeps every other module's reference valid).
+    applyState(d) {
         resetState();
-        const saved = localStorage.getItem(`ec_save_${user}`);
-        if (saved) {
-            let d = JSON.parse(saved);
-            State.player = {...State.player, ...d.player};
-            State.inventory = d.inventory || [];
-            State.equipment = d.equipment || State.equipment;
-            State.materials = {...State.materials, ...d.materials};
-            State.pets = d.pets || [];
-            State.companions = d.companions || [];
-            State.activePetId = d.activePetId || null;
-            State.activeCompanionId = d.activeCompanionId || null;
-            State.selectedZoneId = d.selectedZoneId || 1;
-            State.towerFloor = d.towerFloor || 1;
-            State.player.role = user;
-            return;
-        }
-        // Brand new account — provision starting resources.
-        State.player.role = user;
-        if (user === 'admin') {
-            State.player.gold = 1000000; State.player.gems = 10000; State.player.level = 50;
-            State.player.statPoints = 250; State.player.ep = 10;
-            SLOTS.forEach(slot => {
-                let superItem = {
-                    id: Utils.generateId(), name: Inventory.generateFantasyName(slot, 'ur') + ' +5', slot: slot, type: 'equip',
-                    rarity: 'ur', level: 50, enhanceLevel: 5, stats: { atk: 120, matk: 120, maxHp: 800, def: 45, spd: 30, res: 45, mr: 1, cr: 0.05, cd: 0.2 }, value: 5000
-                };
-                State.equipment[slot] = superItem;
+        State.player = { ...State.player, ...d.player };
+        State.inventory = d.inventory || [];
+        State.equipment = d.equipment || State.equipment;
+        State.materials = { ...State.materials, ...d.materials };
+        State.pets = d.pets || [];
+        State.companions = d.companions || [];
+        State.activePetId = d.activePetId || null;
+        State.activeCompanionId = d.activeCompanionId || null;
+        State.selectedZoneId = d.selectedZoneId || 1;
+        State.towerFloor = d.towerFloor || 1;
+    },
+
+    async handleRegister() {
+        const username = document.getElementById('register-username').value.trim().toLowerCase();
+        const password = document.getElementById('register-password').value;
+        const confirmPassword = document.getElementById('register-password-confirm').value;
+
+        if (!username || !password) { UI.showDialogAlert("Error", "Please fill in both username and password!"); return; }
+        if (password !== confirmPassword) { UI.showDialogAlert("Error", "Passwords do not match!"); return; }
+
+        try {
+            const data = await this.apiFetch('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({ username, password, confirmPassword })
             });
-            State.player.unlockedSkills = [SKILL_DB.fire.basic, SKILL_DB.fire.intermediate];
-        } else {
-            State.player.gold = 10000; State.player.gems = 0; State.player.level = 1;
-            State.player.statPoints = 0; State.player.ep = 0;
-            this.setupStarterItems();
+            localStorage.setItem('ec_token', data.token);
+            this.applyState(data.state);
+            this.checkDailyReset();
+            document.getElementById('login-overlay').classList.add('hidden');
+            Utils.log(`New Soul registered and connected: [${username.toUpperCase()}]!`, 'text-emerald-400 font-bold');
+            PlayerObj.recalculateStats(); UI.init(); Combat.start(); this.save();
+        } catch (e) {
+            UI.showDialogAlert("Error", e.message);
+        }
+    },
+
+    async handleLogin() {
+        const username = document.getElementById('login-username').value.trim().toLowerCase();
+        const password = document.getElementById('login-password').value.trim();
+
+        try {
+            const data = await this.apiFetch('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ username, password })
+            });
+            localStorage.setItem('ec_token', data.token);
+            this.applyState(data.state);
+            this.checkDailyReset();
+            document.getElementById('login-overlay').classList.add('hidden');
+            Utils.log(`Connected successfully as [${username.toUpperCase()}]!`, 'text-indigo-400 font-bold');
+            PlayerObj.recalculateStats(); UI.init(); Combat.start(); this.save();
+        } catch (e) {
+            UI.showDialogAlert("Error", e.message || "Incorrect username or password!");
         }
     },
     setupStarterItems() {
@@ -319,11 +308,13 @@ const Game = {
     },
     save() {
         // Only persist if a real account session is active — never write
-        // pre-login default State, and never let accounts cross-save.
-        if (!State.player.role) return;
+        // pre-login default State.
+        if (!State.player.role || !localStorage.getItem('ec_token')) return;
         let s = JSON.parse(JSON.stringify(State)); delete s.combatState;
-        localStorage.setItem(`ec_save_${State.player.role}`, JSON.stringify(s));
+        this.apiFetch('/player/me', { method: 'PUT', body: JSON.stringify({ state: s }) })
+            .catch(e => console.warn('Save failed:', e.message));
     }
 };
 
 window.onload = function () { Game.init(); }
+
