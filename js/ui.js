@@ -828,7 +828,11 @@ const UI = {
         document.getElementById('dialog-title').innerText = "Log Out";
         document.getElementById('dialog-text').innerText = "Return to the account login screen?";
         let confirmBtn = document.getElementById('dialog-btn-confirm'); confirmBtn.innerText = "Confirm";
-        confirmBtn.onclick = () => { Game.save(); location.reload(); };
+        confirmBtn.onclick = () => {
+            State.player.role = null;
+            Game.save();
+            location.reload();
+        };
         modal.classList.remove('hidden');
     },
     closeDialog() { const modal = document.getElementById('modal-dialog'); if (modal) modal.classList.add('hidden'); }
