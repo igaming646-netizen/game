@@ -387,6 +387,100 @@ const Sprites = {
                 <rect x="86" y="54" width="18" height="42" rx="6" fill="url(#${u}-rock)" stroke="#0c0a09" stroke-width="3"/>
             </svg>`;
         },
+        'Storm Harpy'(entity) {
+            const u = this._uid(entity, 'sh');
+            return `<svg viewBox="0 0 110 110" class="w-20 h-20">
+                <defs>
+                    <linearGradient id="${u}-wing" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#e0f2fe"/><stop offset="60%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0369a1"/>
+                    </linearGradient>
+                    <linearGradient id="${u}-body" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#f1f5f9"/><stop offset="100%" stop-color="#64748b"/>
+                    </linearGradient>
+                </defs>
+                <ellipse cx="55" cy="98" rx="26" ry="6" fill="rgba(0,0,0,.35)"/>
+                <path d="M 52 60 Q 14 48 8 18 Q 32 26 44 40 Q 40 22 48 10 Q 52 28 56 42" fill="url(#${u}-wing)" filter="drop-shadow(0 0 7px #38bdf8)"/>
+                <path d="M 58 60 Q 96 48 102 18 Q 78 26 66 40 Q 70 22 62 10 Q 58 28 54 42" fill="url(#${u}-wing)" filter="drop-shadow(0 0 7px #38bdf8)"/>
+                <ellipse cx="55" cy="64" rx="13" ry="18" fill="url(#${u}-body)" stroke="#334155" stroke-width="1.5"/>
+                <circle cx="55" cy="44" r="10" fill="url(#${u}-body)" stroke="#334155" stroke-width="1.3"/>
+                <path d="M 49 42 L 40 38 L 49 46 Z" fill="#fbbf24"/>
+                <circle cx="58" cy="42" r="2" fill="#0c4a6e"/>
+                <path d="M 46 78 L 36 96 M 56 80 L 54 98 M 66 78 L 76 96" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>`;
+        },
+        'Arcane Wraith'(entity) {
+            const u = this._uid(entity, 'aw');
+            return `<svg viewBox="0 0 100 120" class="w-20 h-20">
+                <defs>
+                    <linearGradient id="${u}-robe" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#312e81"/><stop offset="100%" stop-color="#0a0a1a"/>
+                    </linearGradient>
+                </defs>
+                <ellipse cx="50" cy="106" rx="22" ry="5" fill="rgba(0,0,0,.4)"/>
+                <path d="M 50 36 Q 20 50 28 100 Q 50 112 72 100 Q 80 50 50 36 Z" fill="url(#${u}-robe)" stroke="#1e1b4b" stroke-width="2" opacity=".92"/>
+                <ellipse cx="50" cy="34" rx="16" ry="18" fill="url(#${u}-robe)" stroke="#1e1b4b" stroke-width="1.5"/>
+                <ellipse cx="43" cy="34" rx="2.6" ry="3.4" fill="#a78bfa" filter="drop-shadow(0 0 6px #a78bfa)"/>
+                <ellipse cx="57" cy="34" rx="2.6" ry="3.4" fill="#a78bfa" filter="drop-shadow(0 0 6px #a78bfa)"/>
+                <path d="M 30 60 Q 20 80 26 98 M 70 60 Q 80 80 74 98" stroke="#818cf8" stroke-width="2" fill="none" opacity=".6"/>
+                <circle cx="50" cy="70" r="6" fill="#a78bfa" opacity=".5" filter="drop-shadow(0 0 10px #a78bfa)"/>
+            </svg>`;
+        },
+        'Abyss Hellhound'(entity) {
+            const u = this._uid(entity, 'ah');
+            return `<svg viewBox="0 0 110 100" class="w-20 h-20">
+                <defs>
+                    <radialGradient id="${u}-body" cx="40%" cy="30%" r="75%">
+                        <stop offset="0%" stop-color="#fca5a5"/><stop offset="55%" stop-color="#dc2626"/><stop offset="100%" stop-color="#450a0a"/>
+                    </radialGradient>
+                </defs>
+                <ellipse cx="55" cy="90" rx="28" ry="6" fill="rgba(0,0,0,.4)"/>
+                <ellipse cx="55" cy="62" rx="24" ry="16" fill="url(#${u}-body)" stroke="#1c0a0a" stroke-width="2"/>
+                <circle cx="80" cy="54" r="13" fill="url(#${u}-body)" stroke="#1c0a0a" stroke-width="1.5"/>
+                <path d="M 78 44 L 74 32 M 86 44 L 90 32" stroke="#1c0a0a" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="84" cy="52" r="2.3" fill="#fde047" filter="drop-shadow(0 0 5px #facc15)"/>
+                <path d="M 86 58 L 96 62 L 86 62 Z" fill="#fde047"/>
+                <path d="M 30 56 Q 10 48 8 30 Q 18 38 28 42 Z" fill="#f97316" filter="drop-shadow(0 0 6px #f97316)"/>
+                <path d="M 36 76 L 28 92 M 50 78 L 48 94 M 64 76 L 70 92" stroke="#450a0a" stroke-width="3" stroke-linecap="round"/>
+            </svg>`;
+        },
+        'Ashen Revenant'(entity) {
+            const u = this._uid(entity, 'ar');
+            return `<svg viewBox="0 0 100 120" class="w-20 h-20">
+                <defs>
+                    <linearGradient id="${u}-cloak" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#52525b"/><stop offset="100%" stop-color="#18181b"/>
+                    </linearGradient>
+                </defs>
+                <ellipse cx="50" cy="108" rx="24" ry="6" fill="rgba(0,0,0,.4)"/>
+                <path d="M 50 38 Q 22 52 26 102 Q 50 114 74 102 Q 78 52 50 38 Z" fill="url(#${u}-cloak)" stroke="#000" stroke-width="2"/>
+                <path d="M 38 92 L 30 106 M 62 92 L 70 106" stroke="#27272a" stroke-width="3" stroke-linecap="round"/>
+                <ellipse cx="50" cy="36" rx="15" ry="17" fill="url(#${u}-cloak)" stroke="#000" stroke-width="1.5"/>
+                <ellipse cx="44" cy="36" rx="2.4" ry="3" fill="#f87171" filter="drop-shadow(0 0 6px #ef4444)"/>
+                <ellipse cx="56" cy="36" rx="2.4" ry="3" fill="#f87171" filter="drop-shadow(0 0 6px #ef4444)"/>
+                <path d="M 30 60 L 16 56 L 26 68 Z M 70 60 L 84 56 L 74 68 Z" fill="#3f3f46" stroke="#000" stroke-width="1"/>
+            </svg>`;
+        },
+        'Seraph Guardian'(entity) {
+            const u = this._uid(entity, 'sg');
+            return `<svg viewBox="0 0 110 130" class="w-20 h-20">
+                <defs>
+                    <linearGradient id="${u}-wing" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#fde68a"/>
+                    </linearGradient>
+                    <linearGradient id="${u}-armor" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#fffbeb"/><stop offset="60%" stop-color="#fcd34d"/><stop offset="100%" stop-color="#b45309"/>
+                    </linearGradient>
+                </defs>
+                <ellipse cx="55" cy="120" rx="28" ry="6" fill="rgba(0,0,0,.4)"/>
+                <path d="M 54 64 Q 16 50 8 16 Q 34 26 46 42 Q 40 22 50 8 Q 54 28 60 46" fill="url(#${u}-wing)" filter="drop-shadow(0 0 10px #fde68a)"/>
+                <path d="M 60 64 Q 98 50 106 16 Q 80 26 68 42 Q 74 22 64 8 Q 60 28 54 46" fill="url(#${u}-wing)" filter="drop-shadow(0 0 10px #fde68a)"/>
+                <path d="M 38 44 L 72 44 L 66 100 L 44 100 Z" fill="url(#${u}-armor)" stroke="#78350f" stroke-width="2"/>
+                <circle cx="55" cy="28" r="13" fill="url(#${u}-armor)" stroke="#78350f" stroke-width="2"/>
+                <rect x="50" y="6" width="10" height="20" rx="3" fill="#fde047" filter="drop-shadow(0 0 6px #fde047)"/>
+                <rect x="20" y="60" width="12" height="34" rx="4" fill="url(#${u}-armor)" stroke="#78350f" stroke-width="1.5"/>
+                <rect x="78" y="60" width="12" height="34" rx="4" fill="url(#${u}-armor)" stroke="#78350f" stroke-width="1.5"/>
+            </svg>`;
+        },
         'Thunder Dragon God Lance'(entity) {
             const u = this._uid(entity, 'tdgl');
             return `<svg viewBox="0 0 110 130" class="w-24 h-24">

@@ -71,6 +71,7 @@ const Combat = {
 
         let zone = FANTASY_ZONES.find(z => z.id === State.selectedZoneId) || FANTASY_ZONES[0];
         let zoneMult = 1.0;
+        let activeZoneId = zone.id;
 
         if (State.mode === 'dungeon') {
             level = zone.reqLevel;
@@ -79,13 +80,18 @@ const Combat = {
             let autoIdx = Math.min(FANTASY_ZONES.length - 1, Math.floor((State.player.level - 1) / 15));
             zoneMult = FANTASY_ZONES[autoIdx].mult;
             level = State.player.level;
+            activeZoneId = FANTASY_ZONES[autoIdx].id; // farm mode auto-scales zone by player level
         } else if (State.mode === 'tower') {
             level = State.towerFloor * 2;
             zoneMult = Math.pow(1.22, State.towerFloor);
         }
 
+        // Tower mode mixes every monster in the game; farm/dungeon use
+        // that specific zone's themed roster.
+        let enemyPool = State.mode === 'tower' ? ENEMY_TEMPLATES : (ZONE_ENEMY_POOLS[activeZoneId] || ENEMY_TEMPLATES);
+
         for(let i=0; i<count; i++) {
-            let tpl = ENEMY_TEMPLATES[Utils.randomInt(0, ENEMY_TEMPLATES.length - 1)];
+            let tpl = enemyPool[Utils.randomInt(0, enemyPool.length - 1)];
             let mult = (1 + (level * 0.16)) * zoneMult;
 
             let e = new Entity({ name: `Lv.${level} ${tpl.name}`, isPlayer: false, element: tpl.element });
@@ -353,6 +359,8 @@ const Combat = {
 
         if(victory) {
             let lootList = this.handleLoot();
+            State.player.enemiesDefeated = (State.player.enemiesDefeated || 0) + State.combatState.enemies.length;
+            UI.updateTopBar();
             let expMult = (State.mode === 'dungeon' && State.selectedDungeonType === 'exp') ? 5.0 : 1.0;
             
             // GIẢM: Kinh nghiệm tích lũy khi Auto Farm từ 20-45 xuống 3-8 để tạo độ thử thách

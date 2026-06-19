@@ -33,7 +33,7 @@ const UI = {
         }
     },
     switchTab(tabId) {
-        ['combat', 'character', 'companions', 'inventory', 'skills', 'forge'].forEach(id => {
+        ['combat', 'character', 'companions', 'inventory', 'skills', 'forge', 'quests'].forEach(id => {
             const el = document.getElementById(`tab-${id}`);
             const btn = document.getElementById(`nav-${id}`);
             if (el) el.classList.add('hidden');
@@ -47,6 +47,7 @@ const UI = {
         if (tabId === 'companions') this.updatePartnersTab();
         if (tabId === 'inventory') this.updateInventory();
         if (tabId === 'character') this.updateCharacterScreen();
+        if (tabId === 'quests') this.renderQuestTab();
         this.hideItemDetails();
     },
     switchForgeTab(fTab) {
@@ -69,6 +70,53 @@ const UI = {
         if (gemsEl) gemsEl.innerText = Utils.formatNumber(State.player.gems);
         if (towerEl) towerEl.innerText = State.towerFloor;
         if (dungeonEl) dungeonEl.innerText = State.player.dungeonAttempts;
+
+        const questBadge = document.getElementById('quest-badge');
+        if (questBadge) questBadge.classList.toggle('hidden', !Quests.hasClaimable());
+    },
+    renderQuestTab() {
+        const container = document.getElementById('quest-list');
+        if (!container) return;
+
+        let html = QUEST_DB.map(q => {
+            const progress = Math.min(Quests.getProgress(q), q.target);
+            const pct = Math.floor((progress / q.target) * 100);
+            const complete = Quests.isComplete(q);
+            const claimed = Quests.isClaimed(q);
+
+            let rewardText = [];
+            if (q.reward.gold) rewardText.push(`<i class="fas fa-coins text-amber-400"></i> ${Utils.formatNumber(q.reward.gold)}`);
+            if (q.reward.gems) rewardText.push(`<i class="fas fa-gem text-indigo-400"></i> ${Utils.formatNumber(q.reward.gems)}`);
+
+            let actionHtml;
+            if (claimed) {
+                actionHtml = `<span class="text-[10px] text-gray-600 font-bold uppercase flex items-center gap-1"><i class="fas fa-circle-check"></i> Claimed</span>`;
+            } else if (complete) {
+                actionHtml = `<button onclick="Quests.claim('${q.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-lg shadow-md animate-pulse">Claim</button>`;
+            } else {
+                actionHtml = `<span class="text-[10px] text-gray-500 font-mono">${progress}/${q.target}</span>`;
+            }
+
+            return `
+                <div class="p-3 bg-gray-955 border ${claimed ? 'border-gray-850 opacity-50' : complete ? 'border-emerald-600/60' : 'border-gray-850'} rounded-2xl flex items-center gap-3 shadow-sm">
+                    <div class="w-10 h-10 rounded-xl bg-gray-900 border border-gray-850 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                        <i class="fas ${q.icon}"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-bold text-white text-xs truncate">${q.title}</span>
+                            <div class="flex items-center gap-2 text-[10px] text-gray-400 font-bold flex-shrink-0">${rewardText.join(' &nbsp; ')}</div>
+                        </div>
+                        <p class="text-[10px] text-gray-500 mb-1.5">${q.desc}</p>
+                        <div class="w-full h-1.5 bg-gray-900 rounded-full overflow-hidden">
+                            <div class="h-full ${complete ? 'bg-emerald-500' : 'bg-indigo-600'} transition-all" style="width:${pct}%"></div>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0">${actionHtml}</div>
+                </div>`;
+        }).join('');
+
+        container.innerHTML = html;
     },
     renderZoneSelectors() {
         let container = document.getElementById('zone-selector-grid');

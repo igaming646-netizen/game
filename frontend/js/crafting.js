@@ -26,6 +26,7 @@ const Crafting = {
                 State.player.gold = res.state.player.gold;
                 State.equipment = res.state.equipment;
                 if (res.success) {
+                    State.player.totalEnhanceSuccess = (State.player.totalEnhanceSuccess || 0) + 1;
                     Utils.log(res.message, "text-amber-400 font-bold");
                     if (platform) { platform.classList.add('success-pulse'); setTimeout(() => platform.classList.remove('success-pulse'), 800); }
                 } else {
@@ -69,8 +70,10 @@ const Crafting = {
         Game.apiFetch('/player/alchemy', { method: 'POST', body: JSON.stringify({ recipe }) })
             .then(res => {
                 State.materials = res.state.materials;
+                if (res.success) State.player.totalAlchemySuccess = (State.player.totalAlchemySuccess || 0) + 1;
                 Utils.log(res.message, res.success ? "text-emerald-400" : "text-rose-500");
                 UI.updateForgeScreen();
+                UI.updateTopBar();
             })
             .catch(e => UI.showDialogAlert("Failed", e.message));
     }

@@ -148,6 +148,11 @@
                 <i class="fas fa-hammer-war text-lg w-5 text-center"></i> 
                 <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Forge</span>
             </button>
+            <button id="nav-quests" onclick="UI.switchTab('quests')" class="nav-btn text-gray-500 text-left p-3 rounded-xl flex items-center gap-4 transition-all relative">
+                <i class="fas fa-scroll text-lg w-5 text-center"></i>
+                <span class="hidden md:inline text-xs font-bold uppercase tracking-wider">Quests</span>
+                <span id="quest-badge" class="hidden absolute top-1 right-1 md:right-2 w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_6px_2px_rgba(52,211,153,0.7)]"></span>
+            </button>
         </aside>
 
         <main class="flex-1 bg-gray-900/30 p-4 overflow-y-auto relative z-10 flex flex-col justify-between" id="main-content">
@@ -528,6 +533,17 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- QUESTS TAB -->
+                <div id="tab-quests" class="hidden h-full flex flex-col gap-4 pt-12 md:pt-0">
+                    <div class="p-4 bg-gray-955/90 border border-gray-850 rounded-2xl shadow-xl">
+                        <h3 class="font-bold text-emerald-400 text-xs uppercase tracking-wider flex items-center gap-2 mb-1">
+                            <i class="fas fa-scroll"></i> Soul's Journey
+                        </h3>
+                        <p class="text-[10px] text-gray-500">Complete milestones to earn bonus Gold &amp; Gems as you grow stronger.</p>
+                    </div>
+                    <div id="quest-list" class="flex flex-col gap-2.5 overflow-y-auto"></div>
+                </div>
             </div>
 
             <!-- GLOBAL INSPECT PANEL (DRAWER FOR EQUIPMENT DETAILS/EMPTY SLOT OPTION SELECTION) -->
@@ -594,6 +610,7 @@
     <script src="js/partners.js"></script>
     <script src="js/inventory.js"></script>
     <script src="js/crafting.js"></script>
+    <script src="js/quests.js"></script>
     <script src="js/combat.js"></script>
     <script src="js/sprites.js"></script>
     <script src="js/ui.js"></script>

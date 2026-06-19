@@ -130,12 +130,47 @@ const COMP_SKILL_POOLS = {
     ]
 };
 
-const ENEMY_TEMPLATES = [
-    { name: 'Colossal Golem', baseStats: { hp: 130, atk: 14, def: 12, res: 6, spd: 75, matk: 0 }, element: 'earth' },
-    { name: 'Wind Demon Griffin', baseStats: { hp: 85, atk: 16, def: 5, res: 5, spd: 130, matk: 4 }, element: 'wind' },
-    { name: 'Water Dragon Hatchling', baseStats: { hp: 105, atk: 10, def: 7, res: 11, spd: 90, matk: 12 }, element: 'water' },
-    { name: 'Pyro Golem Demon', baseStats: { hp: 110, atk: 12, def: 8, res: 8, spd: 95, matk: 15 }, element: 'fire' },
-    { name: 'Thunder Dragon God Lance', baseStats: { hp: 100, atk: 20, def: 8, res: 8, spd: 120, matk: 14 }, element: 'lightning' }
+// Each zone now has its own themed enemy roster instead of every zone
+// rolling from the exact same 5 monsters. Tower mode mixes all of them.
+const ZONE_ENEMY_POOLS = {
+    1: [ // Stormhaven Port — misty harbor, sea & wind creatures
+        { name: 'Water Dragon Hatchling', baseStats: { hp: 105, atk: 10, def: 7, res: 11, spd: 90, matk: 12 }, element: 'water' },
+        { name: 'Storm Harpy', baseStats: { hp: 90, atk: 15, def: 6, res: 6, spd: 140, matk: 6 }, element: 'wind' }
+    ],
+    2: [ // Aethelgard Altar — mystical ruins, arcane & wind guardians
+        { name: 'Wind Demon Griffin', baseStats: { hp: 85, atk: 16, def: 5, res: 5, spd: 130, matk: 4 }, element: 'wind' },
+        { name: 'Arcane Wraith', baseStats: { hp: 95, atk: 11, def: 5, res: 14, spd: 100, matk: 18 }, element: 'dark' }
+    ],
+    3: [ // Muspelheim Abyss — fiery chasm, fire demons & beasts
+        { name: 'Pyro Golem Demon', baseStats: { hp: 110, atk: 12, def: 8, res: 8, spd: 95, matk: 15 }, element: 'fire' },
+        { name: 'Abyss Hellhound', baseStats: { hp: 115, atk: 18, def: 7, res: 6, spd: 115, matk: 6 }, element: 'fire' }
+    ],
+    4: [ // Ashen Citadel — grey fortress, golems & undead
+        { name: 'Colossal Golem', baseStats: { hp: 130, atk: 14, def: 12, res: 6, spd: 75, matk: 0 }, element: 'earth' },
+        { name: 'Ashen Revenant', baseStats: { hp: 140, atk: 16, def: 14, res: 10, spd: 85, matk: 10 }, element: 'dark' }
+    ],
+    5: [ // Elysium Sanctum — holy sanctum, divine guardians
+        { name: 'Thunder Dragon God Lance', baseStats: { hp: 100, atk: 20, def: 8, res: 8, spd: 120, matk: 14 }, element: 'lightning' },
+        { name: 'Seraph Guardian', baseStats: { hp: 160, atk: 18, def: 16, res: 16, spd: 100, matk: 18 }, element: 'light' }
+    ]
+};
+// Flat pool of every enemy in the game — used by Tower mode, which isn't
+// tied to a specific zone.
+const ENEMY_TEMPLATES = Object.values(ZONE_ENEMY_POOLS).flat();
+
+// Light milestone quest chain. `progress(p)` reads current value off
+// State.player; `target` is the goal. Claiming grants `reward` once.
+const QUEST_DB = [
+    { id: 'q1_level5', title: "Budding Hero", desc: "Reach Level 5", icon: 'fa-seedling', type: 'level', target: 5, reward: { gold: 500, gems: 0 } },
+    { id: 'q2_kill10', title: "First Blood", desc: "Defeat 10 enemies", icon: 'fa-khanda', type: 'kill', target: 10, reward: { gold: 800, gems: 0 } },
+    { id: 'q3_alchemy3', title: "Apprentice Alchemist", desc: "Succeed at Alchemy 3 times", icon: 'fa-flask', type: 'alchemy', target: 3, reward: { gold: 1200, gems: 0 } },
+    { id: 'q4_enhance5', title: "Forge Novice", desc: "Succeed at Equipment Enhancement 5 times", icon: 'fa-hammer', type: 'enhance', target: 5, reward: { gold: 1500, gems: 0 } },
+    { id: 'q5_level15', title: "Rising Star", desc: "Reach Level 15 — unlocks Aethelgard Altar", icon: 'fa-star', type: 'level', target: 15, reward: { gold: 2000, gems: 20 } },
+    { id: 'q6_kill50', title: "Monster Hunter", desc: "Defeat 50 enemies", icon: 'fa-crosshairs', type: 'kill', target: 50, reward: { gold: 3000, gems: 30 } },
+    { id: 'q7_level30', title: "Veteran Adventurer", desc: "Reach Level 30 — unlocks Muspelheim Abyss", icon: 'fa-fire', type: 'level', target: 30, reward: { gold: 5000, gems: 50 } },
+    { id: 'q8_level45', title: "Citadel Breaker", desc: "Reach Level 45 — unlocks Ashen Citadel", icon: 'fa-chess-rook', type: 'level', target: 45, reward: { gold: 10000, gems: 80 } },
+    { id: 'q9_kill200', title: "Legendary Slayer", desc: "Defeat 200 enemies", icon: 'fa-skull-crossbones', type: 'kill', target: 200, reward: { gold: 15000, gems: 100 } },
+    { id: 'q10_level60', title: "Ascended Champion", desc: "Reach Level 60 — unlocks Elysium Sanctum", icon: 'fa-crown', type: 'level', target: 60, reward: { gold: 25000, gems: 150 } }
 ];
 
 let State = {
@@ -145,8 +180,10 @@ let State = {
         statPoints: 0, ep: 0,
         baseStats: { maxHp: 0, atk: 0, matk: 0, def: 0, res: 0, spd: 0, mr: 0, cr: 0, cd: 0 },
         elementPoints: { fire: 0, water: 0, earth: 0, wind: 0, lightning: 0, light: 0, dark: 0 },
-        unlockedSkills: [], dungeonAttempts: 30, pityCount: 0, lastDungeonReset: "", role: 'guest'
+        unlockedSkills: [], dungeonAttempts: 30, pityCount: 0, lastDungeonReset: "", role: 'guest',
+        enemiesDefeated: 0, totalAlchemySuccess: 0, totalEnhanceSuccess: 0
     },
+    claimedQuests: [],
     equipment: { weapon: null, helmet: null, armor: null, ring: null, gloves: null, necklace: null, pants: null, boots: null, belt: null },
     inventory: [],
     materials: { raw_iron: 5, fine_iron: 0, refined_iron: 0, philosopher_stone: 0, pet_soul: 0, comp_soul: 0 },

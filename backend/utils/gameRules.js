@@ -20,8 +20,10 @@ function getDefaultState(role) {
             statPoints: 0, ep: 0,
             baseStats: { maxHp: 0, atk: 0, matk: 0, def: 0, res: 0, spd: 0, mr: 0, cr: 0, cd: 0 },
             elementPoints: { fire: 0, water: 0, earth: 0, wind: 0, lightning: 0, light: 0, dark: 0 },
-            unlockedSkills: [], dungeonAttempts: 30, pityCount: 0, lastDungeonReset: '', role
+            unlockedSkills: [], dungeonAttempts: 30, pityCount: 0, lastDungeonReset: '', role,
+            enemiesDefeated: 0, totalAlchemySuccess: 0, totalEnhanceSuccess: 0
         },
+        claimedQuests: [],
         equipment: { weapon: null, helmet: null, armor: null, ring: null, gloves: null, necklace: null, pants: null, boots: null, belt: null },
         inventory: [],
         materials: { raw_iron: 5, fine_iron: 0, refined_iron: 0, philosopher_stone: 0, pet_soul: 0, comp_soul: 0 },

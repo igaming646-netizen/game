@@ -81,6 +81,7 @@ const Game = {
         State.activeCompanionId = d.activeCompanionId || null;
         State.selectedZoneId = d.selectedZoneId || 1;
         State.towerFloor = d.towerFloor || 1;
+        State.claimedQuests = d.claimedQuests || [];
     },
 
     async handleRegister() {
