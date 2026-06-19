@@ -15,7 +15,12 @@ const Sprites = {
 
     get(entity) {
         const name = entity && entity.name;
-        const builder = this.LIBRARY[name];
+        let builder = this.LIBRARY[name];
+        if (!builder && name) {
+            // Enemy names are stored as "Lv.<n> <Template Name>" — strip the prefix and retry.
+            const stripped = name.replace(/^Lv\.\d+\s*/, '');
+            builder = this.LIBRARY[stripped];
+        }
         if (builder) return builder.call(this, entity);
         // Category fallback
         if (entity.isPlayer) return this.LIBRARY['Knight of Light'].call(this, entity);

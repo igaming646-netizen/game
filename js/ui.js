@@ -796,4 +796,3 @@ const UI = {
     },
     closeDialog() { const modal = document.getElementById('modal-dialog'); if (modal) modal.classList.add('hidden'); }
 };
-
