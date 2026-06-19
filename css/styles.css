@@ -166,8 +166,95 @@ body {
             100% { box-shadow: 0 0 30px 20px rgba(16, 185, 129, 0); }
         }
 
+        /* ============================================================
+           ZONE BACKGROUNDS — one distinct atmosphere per battlefield,
+           built from layered gradients + inline SVG silhouettes so they
+           never depend on external images.
+           ============================================================ */
+        #arena-box { transition: background 0.6s ease; }
+
+        /* Zone 1 — Stormhaven Port: misty teal harbor at dusk */
+        .zone-bg-1 {
+            background:
+                linear-gradient(180deg, rgba(3,5,10,0.55) 0%, rgba(3,5,10,0.25) 45%, rgba(3,5,10,0.88) 100%),
+                radial-gradient(ellipse at 50% 100%, rgba(8,47,73,0.9) 0%, rgba(3,5,10,1) 75%),
+                linear-gradient(180deg, #0c4a6e 0%, #082f49 35%, #020306 100%);
+        }
+        .zone-bg-1::before {
+            content: ''; position: absolute; inset: 0; opacity: .5; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cg fill='%23031420' opacity='0.8'%3E%3Crect x='30' y='110' width='10' height='70'/%3E%3Crect x='10' y='130' width='50' height='14'/%3E%3Cpolygon points='250,60 260,130 240,130'/%3E%3Crect x='245' y='130' width='10' height='50'/%3E%3Crect x='300' y='90' width='14' height='90'/%3E%3Cpolygon points='150,90 158,140 142,140'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover; background-position: bottom;
+        }
+
+        /* Zone 2 — Aethelgard Altar: violet mystical ruins */
+        .zone-bg-2 {
+            background:
+                linear-gradient(180deg, rgba(3,5,10,0.5) 0%, rgba(3,5,10,0.2) 45%, rgba(3,5,10,0.88) 100%),
+                radial-gradient(circle at 50% 60%, rgba(168,85,247,0.35) 0%, transparent 60%),
+                linear-gradient(180deg, #2e1065 0%, #1e1b4b 40%, #020306 100%);
+        }
+        .zone-bg-2::before {
+            content: ''; position: absolute; inset: 0; opacity: .55; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cg fill='none' stroke='%23a855f7' stroke-width='2'%3E%3Ccircle cx='200' cy='150' r='60' opacity='0.4'/%3E%3Ccircle cx='200' cy='150' r='90' opacity='0.2'/%3E%3C/g%3E%3Cg fill='%231e1b4b'%3E%3Crect x='80' y='120' width='16' height='80'/%3E%3Crect x='304' y='120' width='16' height='80'/%3E%3Crect x='70' y='110' width='36' height='14'/%3E%3Crect x='294' y='110' width='36' height='14'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover; background-position: bottom;
+        }
+
+        /* Zone 3 — Muspelheim Abyss: fiery chasm */
+        .zone-bg-3 {
+            background:
+                linear-gradient(180deg, rgba(3,5,10,0.45) 0%, rgba(3,5,10,0.15) 45%, rgba(3,5,10,0.9) 100%),
+                radial-gradient(circle at 50% 95%, rgba(249,115,22,0.55) 0%, transparent 60%),
+                linear-gradient(180deg, #450a0a 0%, #1c0a0a 45%, #020306 100%);
+        }
+        .zone-bg-3::before {
+            content: ''; position: absolute; inset: 0; opacity: .6; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cg fill='%23ea580c' opacity='0.55'%3E%3Cpolygon points='0,200 40,150 80,200'/%3E%3Cpolygon points='120,200 170,130 220,200'/%3E%3Cpolygon points='260,200 300,160 340,200'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover; background-position: bottom; filter: blur(1px);
+        }
+
+        /* Zone 4 — Ashen Citadel: grey fortress under ember sky */
+        .zone-bg-4 {
+            background:
+                linear-gradient(180deg, rgba(3,5,10,0.5) 0%, rgba(3,5,10,0.2) 45%, rgba(3,5,10,0.9) 100%),
+                radial-gradient(circle at 50% 20%, rgba(248,113,113,0.25) 0%, transparent 55%),
+                linear-gradient(180deg, #44403c 0%, #1c1917 40%, #020306 100%);
+        }
+        .zone-bg-4::before {
+            content: ''; position: absolute; inset: 0; opacity: .6; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cg fill='%2329241f'%3E%3Crect x='40' y='90' width='340' height='110'/%3E%3Crect x='40' y='70' width='20' height='20'/%3E%3Crect x='80' y='70' width='20' height='20'/%3E%3Crect x='120' y='60' width='24' height='30'/%3E%3Crect x='340' y='70' width='20' height='20'/%3E%3Crect x='300' y='70' width='20' height='20'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover; background-position: bottom;
+        }
+
+        /* Zone 5 — Elysium Sanctum: golden holy light */
+        .zone-bg-5 {
+            background:
+                linear-gradient(180deg, rgba(3,5,10,0.4) 0%, rgba(3,5,10,0.1) 45%, rgba(3,5,10,0.88) 100%),
+                radial-gradient(circle at 50% 35%, rgba(253,224,71,0.3) 0%, transparent 60%),
+                linear-gradient(180deg, #78350f 0%, #422006 45%, #020306 100%);
+        }
+        .zone-bg-5::before {
+            content: ''; position: absolute; inset: 0; opacity: .5; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cg fill='%23fde68a' opacity='0.25'%3E%3Cpolygon points='200,0 210,200 190,200'/%3E%3Cpolygon points='140,0 155,200 135,200'/%3E%3Cpolygon points='260,0 270,200 250,200'/%3E%3C/g%3E%3Cg fill='%23451a03'%3E%3Crect x='150' y='130' width='14' height='70'/%3E%3Crect x='236' y='130' width='14' height='70'/%3E%3Cellipse cx='200' cy='130' rx='90' ry='14'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: cover; background-position: bottom;
+        }
+
+        /* Ambient floating motes/embers shared across zones */
+        .ambient-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+        .ambient-particle {
+            position: absolute; bottom: -10px; border-radius: 50%;
+            animation: float-up linear infinite;
+            opacity: 0;
+        }
+        @keyframes float-up {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: .8; }
+            90% { opacity: .5; }
+            100% { transform: translateY(-340px) translateX(var(--drift, 20px)); opacity: 0; }
+        }
+
         .item-stack-badge {
             position: absolute; bottom: 1px; right: 2px;
+
             background: rgba(0, 0, 0, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 4px; padding: 0 3px;

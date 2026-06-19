@@ -87,6 +87,43 @@ const UI = {
             `;
         });
         container.innerHTML = html;
+        this.applyZoneAtmosphere(State.selectedZoneId);
+    },
+
+    applyZoneAtmosphere(zoneId) {
+        const arena = document.getElementById('arena-box');
+        if (!arena) return;
+        for (let i = 1; i <= 5; i++) arena.classList.remove(`zone-bg-${i}`);
+        arena.classList.add(`zone-bg-${zoneId}`);
+        this.spawnAmbientParticles(zoneId);
+    },
+
+    spawnAmbientParticles(zoneId) {
+        const layer = document.getElementById('arena-particles');
+        if (!layer) return;
+        layer.innerHTML = '';
+        // Per-zone particle palette: [color, size range, count, speed range]
+        const PALETTES = {
+            1: { colors: ['#bae6fd', '#e0f2fe'], size: [2, 4], count: 14, dur: [9, 16] },   // sea mist
+            2: { colors: ['#d8b4fe', '#a855f7'], size: [2, 4], count: 16, dur: [8, 14] },   // arcane motes
+            3: { colors: ['#fb923c', '#fde047'], size: [2, 5], count: 18, dur: [5, 9] },    // embers
+            4: { colors: ['#fca5a5', '#9ca3af'], size: [1, 3], count: 12, dur: [10, 18] },  // ash
+            5: { colors: ['#fef9c3', '#fde68a'], size: [2, 4], count: 16, dur: [7, 13] },   // holy sparks
+        };
+        const p = PALETTES[zoneId] || PALETTES[1];
+        for (let i = 0; i < p.count; i++) {
+            const dot = document.createElement('div');
+            const size = p.size[0] + Math.random() * (p.size[1] - p.size[0]);
+            const dur = p.dur[0] + Math.random() * (p.dur[1] - p.dur[0]);
+            const left = Math.random() * 100;
+            const delay = Math.random() * dur;
+            const color = p.colors[Math.floor(Math.random() * p.colors.length)];
+            dot.className = 'ambient-particle';
+            dot.style.cssText = `left:${left}%; width:${size}px; height:${size}px; background:${color};
+                box-shadow:0 0 ${size * 2}px ${color}; animation-duration:${dur}s; animation-delay:-${delay}s;
+                --drift:${(Math.random() * 40 - 20).toFixed(0)}px;`;
+            layer.appendChild(dot);
+        }
     },
     setAllocationBatch(val) {
         State.allocationBatch = val;

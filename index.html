@@ -170,14 +170,15 @@
                         </div>
                     </div>
 
-                    <div class="flex-1 relative min-h-[420px] border border-gray-850 rounded-3xl overflow-hidden shadow-inner flex flex-col justify-between p-4" id="arena-box" style="background: linear-gradient(180deg, rgba(3,5,10,0.85) 0%, rgba(3,5,10,0.5) 50%, rgba(3,5,10,0.85) 100%), url('https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;">
+                    <div class="flex-1 relative min-h-[420px] border border-gray-850 rounded-3xl overflow-hidden shadow-inner flex flex-col justify-between p-4 zone-bg-1" id="arena-box">
+                        <div id="arena-particles" class="ambient-particles"></div>
                         <div class="flex justify-between items-center z-20 relative text-[9px] font-bold">
                             <span class="text-indigo-400 uppercase bg-indigo-950/30 border border-indigo-900/40 px-3 py-1 rounded-lg"><i class="fas fa-shield mr-1"></i>Light Side</span>
                             <span class="text-gray-400 bg-gray-955/80 px-4 py-1.5 rounded-full border border-gray-800 uppercase tracking-widest">Fully automated combat (Smart AI targets weaknesses)</span>
                             <span class="text-rose-400 uppercase bg-rose-950/30 border border-rose-900/40 px-3 py-1 rounded-lg"><i class="fas fa-skull mr-1"></i>Dark Forces</span>
                         </div>
 
-                        <div class="flex-1 w-full h-full relative" id="battle-scene-wrapper">
+                        <div class="flex-1 w-full h-full relative z-10" id="battle-scene-wrapper">
                             <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:35px_35px]" style="transform: perspective(500px) rotateX(55deg) scale(1.8); transform-origin: top center; pointer-events: none;"></div>
                             <div id="action-timeline" class="absolute left-2 top-1/2 -translate-y-1/2 w-12 bg-gray-955/95 border border-gray-850 p-2 rounded-xl flex flex-col gap-1.5 z-30 shadow-2xl items-center">
                                 <span class="text-[7px] text-gray-500 font-bold tracking-widest">TURN</span>
