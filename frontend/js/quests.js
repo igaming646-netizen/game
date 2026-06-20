@@ -20,22 +20,26 @@ const Quests = {
         return QUEST_DB.some(q => this.isComplete(q) && !this.isClaimed(q));
     },
     claim(questId) {
-        const quest = QUEST_DB.find(q => q.id === questId);
-        if (!quest) return;
-        if (!this.isComplete(quest) || this.isClaimed(quest)) return;
+        try {
+            const quest = QUEST_DB.find(q => q.id === questId);
+            if (!quest) return;
+            if (!this.isComplete(quest) || this.isClaimed(quest)) return;
 
-        if (!State.claimedQuests) State.claimedQuests = [];
-        State.claimedQuests.push(quest.id);
-        State.player.gold += quest.reward.gold || 0;
-        State.player.gems += quest.reward.gems || 0;
+            if (!State.claimedQuests) State.claimedQuests = [];
+            State.claimedQuests.push(quest.id);
+            State.player.gold += quest.reward.gold || 0;
+            State.player.gems += quest.reward.gems || 0;
 
-        let rewardText = [];
-        if (quest.reward.gold) rewardText.push(`+${quest.reward.gold} Gold`);
-        if (quest.reward.gems) rewardText.push(`+${quest.reward.gems} Gems`);
-        Utils.log(`Quest complete: "${quest.title}" — ${rewardText.join(', ')}!`, 'text-emerald-400 font-bold');
+            let rewardText = [];
+            if (quest.reward.gold) rewardText.push(`+${quest.reward.gold} Gold`);
+            if (quest.reward.gems) rewardText.push(`+${quest.reward.gems} Gems`);
+            Utils.log(`Quest complete: "${quest.title}" — ${rewardText.join(', ')}!`, 'text-emerald-400 font-bold');
 
-        UI.updateTopBar();
-        UI.renderQuestTab();
-        Game.save();
+            UI.updateTopBar();
+            UI.renderQuestTab();
+            Game.save();
+        } catch (e) {
+            console.error('[Quests.claim] failed:', e);
+        }
     }
 };

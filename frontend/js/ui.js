@@ -92,7 +92,7 @@ const UI = {
             if (claimed) {
                 actionHtml = `<span class="text-[10px] text-gray-600 font-bold uppercase flex items-center gap-1"><i class="fas fa-circle-check"></i> Claimed</span>`;
             } else if (complete) {
-                actionHtml = `<button onclick="Quests.claim('${q.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-lg shadow-md animate-pulse">Claim</button>`;
+                actionHtml = `<button type="button" onclick="Quests.claim('${q.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-lg shadow-md animate-pulse">Claim</button>`;
             } else {
                 actionHtml = `<span class="text-[10px] text-gray-500 font-mono">${progress}/${q.target}</span>`;
             }
