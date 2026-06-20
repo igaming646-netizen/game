@@ -317,7 +317,9 @@ const Game = {
     checkDailyReset() {
         const today = new Date().toDateString();
         if (State.player.lastDungeonReset !== today) {
-            State.player.dungeonAttempts = 30; State.player.lastDungeonReset = today;
+            // Admin doesn't follow normal account rules — keep it effectively unlimited.
+            State.player.dungeonAttempts = (State.player.role === 'admin') ? 999999 : 30;
+            State.player.lastDungeonReset = today;
             UI.updateTopBar();
         }
     },
@@ -355,4 +357,3 @@ const Game = {
 };
 
 window.onload = function () { Game.init(); }
-

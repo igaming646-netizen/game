@@ -898,6 +898,14 @@ const UI = {
         };
         modal.classList.remove('hidden');
     },
-    closeDialog() { const modal = document.getElementById('modal-dialog'); if (modal) modal.classList.add('hidden'); }
+    closeDialog() {
+        const modal = document.getElementById('modal-dialog');
+        if (modal) modal.classList.add('hidden');
+        // Always clear the shared Confirm button's handler on close —
+        // otherwise a previous dialog's action (e.g. Logout's reload)
+        // can stay bound and fire unexpectedly the next time this
+        // shared modal/button is touched.
+        const confirmBtn = document.getElementById('dialog-btn-confirm');
+        if (confirmBtn) confirmBtn.onclick = null;
+    }
 };
-

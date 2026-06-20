@@ -13,6 +13,46 @@
    and combat rewards next.
    ============================================================ */
 
+// Mirrors frontend/js/config.js SKILL_DB — used only to grant the admin
+// account every skill in the game on creation.
+const SKILL_DB = {
+    fire: {
+        basic: { id: 'f1', name: 'Fireball', cost: 20, mult: 1.2, type: 'damage', epReq: 1, tierName: 'Basic' },
+        intermediate: { id: 'f2', name: 'Incinerate', cost: 35, mult: 1.7, type: 'damage', epReq: 5, tierName: 'Intermediate' },
+        advanced: { id: 'f3', name: 'Inferno', cost: 50, mult: 2.3, type: 'damage', epReq: 12, tierName: 'Advanced' }
+    },
+    water: {
+        basic: { id: 'w1', name: 'Aqua Arrow', cost: 20, mult: 1.2, type: 'damage', epReq: 1, tierName: 'Basic' },
+        intermediate: { id: 'w2', name: 'Ice Storm', cost: 35, mult: 1.7, type: 'damage', epReq: 5, tierName: 'Intermediate' },
+        advanced: { id: 'w3', name: 'Avalanche', cost: 50, mult: 2.3, type: 'damage', epReq: 12, tierName: 'Advanced' }
+    },
+    earth: {
+        basic: { id: 'e1', name: 'Earthquake', cost: 20, mult: 1.2, type: 'damage', epReq: 1, tierName: 'Basic' },
+        intermediate: { id: 'e2', name: 'Stone Wall', cost: 35, mult: 1.7, type: 'damage', epReq: 5, tierName: 'Intermediate' },
+        advanced: { id: 'e3', name: 'Boulder Crush', cost: 50, mult: 2.3, type: 'damage', epReq: 12, tierName: 'Advanced' }
+    },
+    wind: {
+        basic: { id: 'wi1', name: 'Wind Blade', cost: 20, mult: 1.2, type: 'damage', epReq: 1, tierName: 'Basic' },
+        intermediate: { id: 'wi2', name: 'Gale Step', cost: 35, mult: 1.7, type: 'damage', epReq: 5, tierName: 'Intermediate' },
+        advanced: { id: 'wi3', name: 'Cyclone Slash', cost: 50, mult: 2.3, type: 'damage', epReq: 12, tierName: 'Advanced' }
+    },
+    lightning: {
+        basic: { id: 'li1', name: 'Thunderbolt', cost: 20, mult: 1.2, type: 'damage', epReq: 1, tierName: 'Basic' },
+        intermediate: { id: 'li2', name: 'Chain Lightning', cost: 35, mult: 1.7, type: 'damage', epReq: 5, tierName: 'Intermediate' },
+        advanced: { id: 'li3', name: 'Thunder Strike', cost: 50, mult: 2.3, type: 'damage', epReq: 12, tierName: 'Advanced' }
+    },
+    light: {
+        basic: { id: 'l1', name: 'Holy Heal', cost: 25, mult: 1.3, type: 'heal', epReq: 1, tierName: 'Basic' },
+        intermediate: { id: 'l2', name: 'Radiant Shield', cost: 40, mult: 1.8, type: 'heal', epReq: 5, tierName: 'Intermediate' },
+        advanced: { id: 'l3', name: 'Salvation', cost: 55, mult: 2.4, type: 'heal', epReq: 12, tierName: 'Advanced' }
+    },
+    dark: {
+        basic: { id: 'd1', name: 'Soul Drain', cost: 25, mult: 1.1, type: 'lifesteal', epReq: 1, tierName: 'Basic' },
+        intermediate: { id: 'd2', name: 'Shadow Bind', cost: 40, mult: 1.6, type: 'damage', epReq: 5, tierName: 'Intermediate' },
+        advanced: { id: 'd3', name: 'Nightmare Curse', cost: 55, mult: 2.2, type: 'damage', epReq: 12, tierName: 'Advanced' }
+    }
+};
+
 function getDefaultState(role) {
     const base = {
         player: {
@@ -32,17 +72,44 @@ function getDefaultState(role) {
     };
 
     if (role === 'admin') {
-        base.player.gold = 1000000; base.player.gems = 10000; base.player.level = 50;
-        base.player.statPoints = 250; base.player.ep = 10;
+        // Admin is a sandbox/dev account — it does NOT follow normal
+        // progression rules. Effectively maxed out across the board.
+        base.player.gold = 999999999; base.player.gems = 999999; base.player.level = 99;
+        base.player.statPoints = 9999; base.player.ep = 9999;
+        base.player.dungeonAttempts = 999999; // never runs out, and checkDailyReset() skips resetting this for admin
+        base.player.elementPoints = { fire: 999, water: 999, earth: 999, wind: 999, lightning: 999, light: 999, dark: 999 };
+        // Every skill in the game, across every element, fully unlocked.
+        base.player.unlockedSkills = Object.values(SKILL_DB).flatMap(el => Object.values(el));
+
         const SLOTS = ['weapon', 'helmet', 'armor', 'ring', 'gloves', 'necklace', 'pants', 'boots', 'belt'];
         SLOTS.forEach(slot => {
             base.equipment[slot] = {
-                id: genId(), name: `Admin ${slot} UR +5`, slot, type: 'equip',
-                rarity: 'ur', level: 50, enhanceLevel: 5,
-                stats: { atk: 120, matk: 120, maxHp: 800, def: 45, spd: 30, res: 45, mr: 1, cr: 0.05, cd: 0.2 },
-                value: 5000
+                id: genId(), name: `Admin ${slot} UR +10`, slot, type: 'equip',
+                rarity: 'ur', level: 99, enhanceLevel: 10,
+                stats: { atk: 400, matk: 400, maxHp: 3000, def: 150, spd: 80, res: 150, mr: 2, cr: 0.3, cd: 0.6 },
+                value: 50000
             };
         });
+
+        base.materials = { raw_iron: 999, fine_iron: 999, refined_iron: 999, philosopher_stone: 999, pet_soul: 999, comp_soul: 999 };
+
+        // Pre-owned max-tier pet & companion, already leveled, set active.
+        const phoenix = {
+            id: genId(), name: 'Phoenix UR', level: 50, exp: 0, tier: 'UR', element: 'light',
+            stats: { maxHp: 1000, atk: 100, matk: 150, def: 40, res: 40, spd: 950, mr: 10, cr: 0.1, cd: 11 },
+            bonusStats: { maxHp: 0, atk: 0, matk: 0, def: 0, res: 0, spd: 0, mr: 0, cr: 0, cd: 0 },
+            skillName: 'Phoenix Rebirth', skillType: 'heal', skillMult: 2.0
+        };
+        const thunderGod = {
+            id: genId(), name: 'Thunder God Sentinel UR', level: 50, exp: 0, tier: 'UR', element: 'fire',
+            stats: { maxHp: 2000, atk: 300, matk: 50, def: 80, res: 80, spd: 1050, mr: 10, cr: 0.2, cd: 12 },
+            bonusStats: { maxHp: 0, atk: 0, matk: 0, def: 0, res: 0, spd: 0, mr: 0, cr: 0, cd: 0 },
+            skillName: 'Judgment Bolt', skillType: 'damage', skillMult: 2.5
+        };
+        base.pets = [phoenix];
+        base.companions = [thunderGod];
+        base.activePetId = phoenix.id;
+        base.activeCompanionId = thunderGod.id;
     } else {
         const SLOTS = ['weapon', 'helmet', 'armor', 'ring', 'gloves', 'necklace', 'pants', 'boots', 'belt'];
         SLOTS.forEach(slot => {

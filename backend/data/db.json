@@ -1,3 +1,662 @@
 {
-  "users": {}
+  "users": {
+    "admin": {
+      "username": "admin",
+      "passwordHash": "$2a$10$vM76y6bFjCSmzGI.k8eSf.KtSd7rsqmFdaDEdCXrjjdJPTVVhfcm.",
+      "createdAt": "2026-06-20T06:51:44.978Z",
+      "state": {
+        "menuOpen": false,
+        "allocationBatch": 1,
+        "epBatch": 1,
+        "player": {
+          "name": "Knight of Light",
+          "level": 57,
+          "exp": 18518,
+          "gold": 1058075,
+          "gems": 9150,
+          "statPoints": 285,
+          "ep": 11,
+          "baseStats": {
+            "maxHp": 0,
+            "atk": 0,
+            "matk": 0,
+            "def": 0,
+            "res": 0,
+            "spd": 0,
+            "mr": 0,
+            "cr": 0,
+            "cd": 0
+          },
+          "elementPoints": {
+            "fire": 0,
+            "water": 0,
+            "earth": 0,
+            "wind": 0,
+            "lightning": 0,
+            "light": 0,
+            "dark": 0
+          },
+          "unlockedSkills": [],
+          "dungeonAttempts": 0,
+          "pityCount": 0,
+          "lastDungeonReset": "Sat Jun 20 2026",
+          "role": "admin",
+          "enemiesDefeated": 29,
+          "totalAlchemySuccess": 0,
+          "totalEnhanceSuccess": 0
+        },
+        "claimedQuests": [
+          "q1_level5",
+          "q5_level15",
+          "q7_level30",
+          "q8_level45",
+          "q2_kill10"
+        ],
+        "equipment": {
+          "weapon": {
+            "id": "yd99tlv8mqm023td",
+            "name": "Admin weapon UR +5",
+            "slot": "weapon",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "helmet": {
+            "id": "umab03a1mqm023td",
+            "name": "Admin helmet UR +5",
+            "slot": "helmet",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "armor": {
+            "id": "qrkz0emkmqm023td",
+            "name": "Admin armor UR +5",
+            "slot": "armor",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "ring": {
+            "id": "l36g3p7hmqm023td",
+            "name": "Admin ring UR +5",
+            "slot": "ring",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "gloves": {
+            "id": "0dgdhz8emqm023td",
+            "name": "Admin gloves UR +5",
+            "slot": "gloves",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "necklace": {
+            "id": "hzrt1rmvmqm023td",
+            "name": "Admin necklace UR +5",
+            "slot": "necklace",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "pants": {
+            "id": "87makjnimqm023td",
+            "name": "Admin pants UR +5",
+            "slot": "pants",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "boots": {
+            "id": "0mhg48ubmqm023td",
+            "name": "Admin boots UR +5",
+            "slot": "boots",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          },
+          "belt": {
+            "id": "6q9dbz4dmqm023td",
+            "name": "Admin belt UR +5",
+            "slot": "belt",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 50,
+            "enhanceLevel": 5,
+            "stats": {
+              "atk": 120,
+              "matk": 120,
+              "maxHp": 800,
+              "def": 45,
+              "spd": 30,
+              "res": 45,
+              "mr": 1,
+              "cr": 0.05,
+              "cd": 0.2
+            },
+            "value": 5000
+          }
+        },
+        "inventory": [
+          {
+            "id": "srykb5189",
+            "name": "Dark Treasure Chest Lv.2",
+            "type": "chest",
+            "level": 2,
+            "rarity": "rare",
+            "value": 30,
+            "qty": 1
+          },
+          {
+            "id": "zpllqid4p",
+            "name": "Ancient Gear Chest Lv.4",
+            "type": "chest",
+            "level": 4,
+            "rarity": "sr",
+            "value": 80,
+            "qty": 1
+          },
+          {
+            "id": "optu34qhr",
+            "name": "Ancient Gear Chest Lv.1",
+            "type": "chest",
+            "level": 1,
+            "rarity": "sr",
+            "value": 20,
+            "qty": 5
+          },
+          {
+            "id": "j8s9x6nmg",
+            "name": "Dark Treasure Chest Lv.4",
+            "type": "chest",
+            "level": 4,
+            "rarity": "rare",
+            "value": 60,
+            "qty": 1
+          },
+          {
+            "id": "vqfyvacw7",
+            "name": "Ancient Gear Chest Lv.3",
+            "type": "chest",
+            "level": 3,
+            "rarity": "sr",
+            "value": 60,
+            "qty": 1
+          },
+          {
+            "id": "fju5n4xhx",
+            "name": "Dark Treasure Chest Lv.1",
+            "type": "chest",
+            "level": 1,
+            "rarity": "rare",
+            "value": 15,
+            "qty": 2
+          },
+          {
+            "id": "ivjcblsvf",
+            "name": "Ancient Gear Chest Lv.2",
+            "type": "chest",
+            "level": 2,
+            "rarity": "sr",
+            "value": 40,
+            "qty": 3
+          }
+        ],
+        "materials": {
+          "raw_iron": 12,
+          "fine_iron": 38,
+          "refined_iron": 3,
+          "philosopher_stone": 0,
+          "pet_soul": 0,
+          "comp_soul": 0
+        },
+        "pets": [
+          {
+            "id": "l5o1pb65p",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Raging Thunder",
+            "skillType": "damage",
+            "skillMult": 1.8
+          },
+          {
+            "id": "oyygyyvtn",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Stone Armor",
+            "skillType": "heal",
+            "skillMult": 1.4
+          },
+          {
+            "id": "uigitn3t4",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Stone Armor",
+            "skillType": "heal",
+            "skillMult": 1.4
+          },
+          {
+            "id": "1n851m06q",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Stone Armor",
+            "skillType": "heal",
+            "skillMult": 1.4
+          },
+          {
+            "id": "bakifk85j",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Raging Thunder",
+            "skillType": "damage",
+            "skillMult": 1.8
+          },
+          {
+            "id": "mqdd977fh",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Spirit Rain",
+            "skillType": "heal",
+            "skillMult": 1.6
+          },
+          {
+            "id": "88iycgn6d",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Spirit Rain",
+            "skillType": "heal",
+            "skillMult": 1.6
+          },
+          {
+            "id": "l102jerg6",
+            "name": "Light Kirin SSR",
+            "level": 1,
+            "exp": 0,
+            "tier": "SSR",
+            "element": "light",
+            "stats": {
+              "maxHp": 550,
+              "atk": 55,
+              "matk": 82,
+              "def": 22,
+              "res": 22,
+              "spd": 522,
+              "mr": 5.5,
+              "cr": 0.055,
+              "cd": 6.05
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Great Fireball",
+            "skillType": "damage",
+            "skillMult": 1.7
+          },
+          {
+            "id": "d11woy8p8",
+            "name": "Phoenix UR",
+            "level": 1,
+            "exp": 0,
+            "tier": "UR",
+            "element": "light",
+            "stats": {
+              "maxHp": 1000,
+              "atk": 100,
+              "matk": 150,
+              "def": 40,
+              "res": 40,
+              "spd": 950,
+              "mr": 10,
+              "cr": 0.1,
+              "cd": 11
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Void Divine Shield",
+            "skillType": "heal",
+            "skillMult": 2
+          },
+          {
+            "id": "ml0xqfuy2",
+            "name": "Phoenix UR",
+            "level": 1,
+            "exp": 0,
+            "tier": "UR",
+            "element": "light",
+            "stats": {
+              "maxHp": 1000,
+              "atk": 100,
+              "matk": 150,
+              "def": 40,
+              "res": 40,
+              "spd": 950,
+              "mr": 10,
+              "cr": 0.1,
+              "cd": 11
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Void Divine Shield",
+            "skillType": "heal",
+            "skillMult": 2
+          }
+        ],
+        "companions": [],
+        "activePetId": null,
+        "activeCompanionId": null,
+        "mode": "farm",
+        "selectedDungeonType": "exp",
+        "selectedZoneId": 4,
+        "towerFloor": 1,
+        "inventorySubTab": "equip"
+      }
+    }
+  }
 }
