@@ -1,0 +1,513 @@
+{
+  "users": {
+    "admin": {
+      "username": "admin",
+      "passwordHash": "$2a$10$u7A1yk4n5uv/SrVVkDg/PeGMkxS.HoL3MboI69Irfo9sm14oLAJ9m",
+      "createdAt": "2026-06-20T12:56:40.857Z",
+      "state": {
+        "player": {
+          "name": "Knight of Light",
+          "level": 99,
+          "exp": 0,
+          "gold": 999999999,
+          "gems": 999999,
+          "statPoints": 9999,
+          "ep": 9999,
+          "baseStats": {
+            "maxHp": 0,
+            "atk": 0,
+            "matk": 0,
+            "def": 0,
+            "res": 0,
+            "spd": 0,
+            "mr": 0,
+            "cr": 0,
+            "cd": 0
+          },
+          "elementPoints": {
+            "fire": 999,
+            "water": 999,
+            "earth": 999,
+            "wind": 999,
+            "lightning": 999,
+            "light": 999,
+            "dark": 999
+          },
+          "unlockedSkills": [
+            {
+              "id": "f1",
+              "name": "Fireball",
+              "cost": 20,
+              "mult": 1.2,
+              "type": "damage",
+              "epReq": 1,
+              "tierName": "Basic"
+            },
+            {
+              "id": "f2",
+              "name": "Incinerate",
+              "cost": 35,
+              "mult": 1.7,
+              "type": "damage",
+              "epReq": 5,
+              "tierName": "Intermediate"
+            },
+            {
+              "id": "f3",
+              "name": "Inferno",
+              "cost": 50,
+              "mult": 2.3,
+              "type": "damage",
+              "epReq": 12,
+              "tierName": "Advanced"
+            },
+            {
+              "id": "w1",
+              "name": "Aqua Arrow",
+              "cost": 20,
+              "mult": 1.2,
+              "type": "damage",
+              "epReq": 1,
+              "tierName": "Basic"
+            },
+            {
+              "id": "w2",
+              "name": "Ice Storm",
+              "cost": 35,
+              "mult": 1.7,
+              "type": "damage",
+              "epReq": 5,
+              "tierName": "Intermediate"
+            },
+            {
+              "id": "w3",
+              "name": "Avalanche",
+              "cost": 50,
+              "mult": 2.3,
+              "type": "damage",
+              "epReq": 12,
+              "tierName": "Advanced"
+            },
+            {
+              "id": "e1",
+              "name": "Earthquake",
+              "cost": 20,
+              "mult": 1.2,
+              "type": "damage",
+              "epReq": 1,
+              "tierName": "Basic"
+            },
+            {
+              "id": "e2",
+              "name": "Stone Wall",
+              "cost": 35,
+              "mult": 1.7,
+              "type": "damage",
+              "epReq": 5,
+              "tierName": "Intermediate"
+            },
+            {
+              "id": "e3",
+              "name": "Boulder Crush",
+              "cost": 50,
+              "mult": 2.3,
+              "type": "damage",
+              "epReq": 12,
+              "tierName": "Advanced"
+            },
+            {
+              "id": "wi1",
+              "name": "Wind Blade",
+              "cost": 20,
+              "mult": 1.2,
+              "type": "damage",
+              "epReq": 1,
+              "tierName": "Basic"
+            },
+            {
+              "id": "wi2",
+              "name": "Gale Step",
+              "cost": 35,
+              "mult": 1.7,
+              "type": "damage",
+              "epReq": 5,
+              "tierName": "Intermediate"
+            },
+            {
+              "id": "wi3",
+              "name": "Cyclone Slash",
+              "cost": 50,
+              "mult": 2.3,
+              "type": "damage",
+              "epReq": 12,
+              "tierName": "Advanced"
+            },
+            {
+              "id": "li1",
+              "name": "Thunderbolt",
+              "cost": 20,
+              "mult": 1.2,
+              "type": "damage",
+              "epReq": 1,
+              "tierName": "Basic"
+            },
+            {
+              "id": "li2",
+              "name": "Chain Lightning",
+              "cost": 35,
+              "mult": 1.7,
+              "type": "damage",
+              "epReq": 5,
+              "tierName": "Intermediate"
+            },
+            {
+              "id": "li3",
+              "name": "Thunder Strike",
+              "cost": 50,
+              "mult": 2.3,
+              "type": "damage",
+              "epReq": 12,
+              "tierName": "Advanced"
+            },
+            {
+              "id": "l1",
+              "name": "Holy Heal",
+              "cost": 25,
+              "mult": 1.3,
+              "type": "heal",
+              "epReq": 1,
+              "tierName": "Basic"
+            },
+            {
+              "id": "l2",
+              "name": "Radiant Shield",
+              "cost": 40,
+              "mult": 1.8,
+              "type": "heal",
+              "epReq": 5,
+              "tierName": "Intermediate"
+            },
+            {
+              "id": "l3",
+              "name": "Salvation",
+              "cost": 55,
+              "mult": 2.4,
+              "type": "heal",
+              "epReq": 12,
+              "tierName": "Advanced"
+            },
+            {
+              "id": "d1",
+              "name": "Soul Drain",
+              "cost": 25,
+              "mult": 1.1,
+              "type": "lifesteal",
+              "epReq": 1,
+              "tierName": "Basic"
+            },
+            {
+              "id": "d2",
+              "name": "Shadow Bind",
+              "cost": 40,
+              "mult": 1.6,
+              "type": "damage",
+              "epReq": 5,
+              "tierName": "Intermediate"
+            },
+            {
+              "id": "d3",
+              "name": "Nightmare Curse",
+              "cost": 55,
+              "mult": 2.2,
+              "type": "damage",
+              "epReq": 12,
+              "tierName": "Advanced"
+            }
+          ],
+          "dungeonAttempts": 999999,
+          "pityCount": 0,
+          "lastDungeonReset": "",
+          "role": "admin",
+          "enemiesDefeated": 0,
+          "totalAlchemySuccess": 0,
+          "totalEnhanceSuccess": 0
+        },
+        "claimedQuests": [],
+        "equipment": {
+          "weapon": {
+            "id": "206ek1zimqmd3es9",
+            "name": "Admin weapon UR +10",
+            "slot": "weapon",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "helmet": {
+            "id": "z753vze7mqmd3es9",
+            "name": "Admin helmet UR +10",
+            "slot": "helmet",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "armor": {
+            "id": "kfsc77h2mqmd3es9",
+            "name": "Admin armor UR +10",
+            "slot": "armor",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "ring": {
+            "id": "ghqux3a2mqmd3es9",
+            "name": "Admin ring UR +10",
+            "slot": "ring",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "gloves": {
+            "id": "hf571fe7mqmd3es9",
+            "name": "Admin gloves UR +10",
+            "slot": "gloves",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "necklace": {
+            "id": "wffmupucmqmd3es9",
+            "name": "Admin necklace UR +10",
+            "slot": "necklace",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "pants": {
+            "id": "satd3iigmqmd3es9",
+            "name": "Admin pants UR +10",
+            "slot": "pants",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "boots": {
+            "id": "6ouhgasmmqmd3es9",
+            "name": "Admin boots UR +10",
+            "slot": "boots",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          },
+          "belt": {
+            "id": "g4kccdy0mqmd3es9",
+            "name": "Admin belt UR +10",
+            "slot": "belt",
+            "type": "equip",
+            "rarity": "ur",
+            "level": 99,
+            "enhanceLevel": 10,
+            "stats": {
+              "atk": 400,
+              "matk": 400,
+              "maxHp": 3000,
+              "def": 150,
+              "spd": 80,
+              "res": 150,
+              "mr": 2,
+              "cr": 0.3,
+              "cd": 0.6
+            },
+            "value": 50000
+          }
+        },
+        "inventory": [],
+        "materials": {
+          "raw_iron": 999,
+          "fine_iron": 999,
+          "refined_iron": 999,
+          "philosopher_stone": 999,
+          "pet_soul": 999,
+          "comp_soul": 999
+        },
+        "pets": [
+          {
+            "id": "joupbapumqmd3es9",
+            "name": "Phoenix UR",
+            "level": 50,
+            "exp": 0,
+            "tier": "UR",
+            "element": "light",
+            "stats": {
+              "maxHp": 1000,
+              "atk": 100,
+              "matk": 150,
+              "def": 40,
+              "res": 40,
+              "spd": 950,
+              "mr": 10,
+              "cr": 0.1,
+              "cd": 11
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Phoenix Rebirth",
+            "skillType": "heal",
+            "skillMult": 2
+          }
+        ],
+        "companions": [
+          {
+            "id": "yhnpdka1mqmd3es9",
+            "name": "Thunder God Sentinel UR",
+            "level": 50,
+            "exp": 0,
+            "tier": "UR",
+            "element": "fire",
+            "stats": {
+              "maxHp": 2000,
+              "atk": 300,
+              "matk": 50,
+              "def": 80,
+              "res": 80,
+              "spd": 1050,
+              "mr": 10,
+              "cr": 0.2,
+              "cd": 12
+            },
+            "bonusStats": {
+              "maxHp": 0,
+              "atk": 0,
+              "matk": 0,
+              "def": 0,
+              "res": 0,
+              "spd": 0,
+              "mr": 0,
+              "cr": 0,
+              "cd": 0
+            },
+            "skillName": "Judgment Bolt",
+            "skillType": "damage",
+            "skillMult": 2.5
+          }
+        ],
+        "activePetId": "joupbapumqmd3es9",
+        "activeCompanionId": "yhnpdka1mqmd3es9",
+        "selectedZoneId": 1,
+        "towerFloor": 1
+      }
+    }
+  }
+}
